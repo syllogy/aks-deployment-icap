@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: icap-test
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: icap-test
+  template:
+    metadata:
+      labels:
+        app: icap-test
+    spec:
+      nodeSelector:
+        "beta.kubernetes.io/os": linux
+      containers:
+      - name: icap-test
+        image: gwicapacr.azurecr.io/icap-test:77c5fe91b3b6ccdc541dff3e2e300f98f4e114c6
+        env:
+        ports:
+        - containerPort: 1344
+          name: icap-test
