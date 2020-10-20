@@ -11,4 +11,8 @@ resource "azurerm_container_registry" "acr" {
   sku                      = "Premium"
   admin_enabled            = false
   georeplication_locations = ["UKSouth", "West Europe"]
+  
+  tags = {
+    created_by = "Mattp" 
+  }
 }

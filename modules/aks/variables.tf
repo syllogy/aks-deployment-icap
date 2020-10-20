@@ -10,20 +10,32 @@ variable "region" {
   default     = "UKSouth"
 }
 
-variable "appId" {
-  description = "This is a consolidated name based on org, environment, region"
+variable "secret_sp_1" {
+  description = "This is the name of the secret username for the service principle"
   type        = string
-  default     = "46ab5117-64bf-4b84-8267-8e40bc05624b"
+  default     = "spusername"
 }
 
-variable "password" {
-  description = "This is a consolidated name based on org, environment, region"
+variable "secret_sp_2" {
+  description = "This is the name of the secret password for the service principle"
   type        = string
-  default     = "ch-AXQ2B.IOEEV_g4XjUUFh~6u-FvkMpdf"
+  default     = "sppassword"
 }
 
 variable "prefix" {
   description = "This is a consolidated name based on org, environment, region"
   type        = string
   default     = "gw-icap"
+}
+
+variable "keyvault_name" {
+  description = "This is the name for the Azure Key Vault"
+  type        = string
+  default     = "gw-tfstate-Vault"
+}
+
+variable "vault_resourcegroup_name" {
+  description = "This is the resource group containing the Azure Key Vault"
+  type        = string
+  default     = "gw-icap-tfstate"
 }

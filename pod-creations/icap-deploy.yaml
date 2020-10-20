@@ -7,7 +7,6 @@ spec:
   selector:
     matchLabels:
       app: icap-test
-      run: icap-test
   template:
     metadata:
       labels:
@@ -17,12 +16,6 @@ spec:
       - name: icap-test
         image: gwicapacr.azurecr.io/icap-test:77c5fe91b3b6ccdc541dff3e2e300f98f4e114c6
         resources:
-          requests:
-              memory: "64Mi"
-              cpu: "250m"
-          limits:
-              memory: "128Mi" 
-              cpu: "500m"
         ports:
         - containerPort: 1344
           protocol: TCP
