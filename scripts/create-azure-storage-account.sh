@@ -5,9 +5,9 @@
 # we are creating the remote state storage for Terraform and Terraform needs this storage in terraform init phase.
 
 LOCATION=UKSouth
-RESOURCE_GROUP_NAME=gw-icap-tfstate
+RESOURCE_GROUP_NAME=gw-icap-tfstate-$RANDOM
 STORAGE_ACCOUNT_NAME=tfstate$RANDOM
-CONTAINER_NAME=gw-icap-tfstate
+CONTAINER_NAME=gw-icap-tfstate-$RANDOM
 TAGS='createdby=mattp'
 
 # Create resource group
