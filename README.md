@@ -2,13 +2,87 @@
 
 Deployment for I-CAP Azure resources and AKS Deployment using Terraform
 
-# Standing up Adaptation Service
+## Terraform Deployment
+
+Clone the following repo from Github
+
+[AKS Deployment ICAP](https://github.com/filetrust/aks-deployment-icap)
+
+You will then need to run the following to initiate the submodules that contain the helm charts.
+
+```
+git submodule init
+git submodule update
+```
+
+Once you've cloned down the repo you will need to run the following.
+
+### Add Terraform Backend key to environment
+
+Follow the below commands to get the backend key for Terraform from the Azure Keyvault
+
+Verify you have access to the backend vault 
+
+```
+az keyvault secret show --name terraform-backend-key --vault-name gw-tfstate-Vault --query value -o tsv
+```
+
+Next export the environment variable "ARM_ACCESS_KEY" to be able to initialise terraform
+
+```
+export ARM_ACCESS_KEY=$(az keyvault secret show --name terraform-backend-key --vault-name gw-tfstate-Vault --query value -o tsv)
+
+# now check to see if you can access it through variable
+
+echo $ARM_ACCESS_KEY
+```
+
+### Setup and initialise Terraform
+
+Next you'll need to use the following:
+
+```
+terraform init
+```
+
+Next run terraform validate/refresh to check for changes within the state, and also to make sure there aren't any issues.
+
+```
+terraform validate
+Success! The configuration is valid.
+
+terraform refresh
+```
+
+Now you're ready to run apply and it should give you the following output
+
+```
+terraform apply
+
+Plan: 1 to add, 2 to change, 1 to destroy.
+
+Do you want to perform these actions?
+  Terraform will perform the actions described above.
+  Only 'yes' will be accepted to approve.
+
+  Enter a value:
+```
+
+Once this completes you should see all the infrastructure for the AKS deployed and working.
+
+## Standing up the Adaptation Service
 
 After you have deployed the AKS Cluster to Azure you will then need to follow the steps below to stand up the Adaptation service.
 
-## Deploying Adaptation Cluster - using helm
+### Deploying Adaptation Cluster - using helm
 
 Deploying to AKS
+
+In order to get the credentials for the AKS cluster you must run the command below:
+
+```
+az aks get-credentials --name gw-icap-aks --resource-group gw-icap-aks-deploy
+```
 
 *all commands below should be run from the root directory of the repo "aks-deployment-icap"*
 

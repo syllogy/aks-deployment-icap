@@ -23,7 +23,7 @@ resource "azurerm_kubernetes_cluster" "icap-deploy" {
     name            = "icaptestnode"
     node_count      = 2
     vm_size         = "Standard_D2_v2"
-    os_disk_size_gb = 30
+    os_disk_size_gb = 100
   }
 
   service_principal {
