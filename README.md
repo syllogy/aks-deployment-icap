@@ -20,7 +20,7 @@ Once you've cloned down the repo you will need to run the following.
 ### Add Terraform Backend key to environment
 
 Follow the below commands to get the backend key for Terraform from the Azure Keyvault
-
+az aks get-credentials --resource-group gw-icap-aks-deploy --name gw-icap-ak
 Verify you have access to the backend vault 
 
 ```

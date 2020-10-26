@@ -62,7 +62,7 @@ az keyvault create --name “<vault-name>” --resource-group “<resource group
 Create a new secret name "terraform-backend-key" in the key vault and add the value of the storage access key created previously
 
 ```bash
-az keyvault secret set --vault-name “<vault name>” --name “terraform-backend-key” --value <the value of the access_key key1>
+az keyvault secret set --vault-name “<vault name>” --name “terraform-backend-key” --value <the value of the access_key key>
 ```
 
 Now verify you can read the value of the created secret
@@ -82,6 +82,8 @@ echo $ARM_ACCESS_KEY
 ```
 
 ### Create terraform service principle
+
+*PLEASE NOTE THIS ONLY NEEDS TO BE DONE ONCE FOR A SINGLE SUBSCRIPTION*
 
 This next part will create a service principle, with the least amount of privileges, to perform the AKS Deployment.
 
@@ -219,7 +221,13 @@ The output will be similar to this:
 }
 ```
 
-Next add the following to a file named "export_tf_vars". We will extend it later after creating the server in the next steps.
+Next add the ClientID and ClientSecret to the Azure Keyvault you created earlier. Keep the names in the command below as they are referenced in the Terraform code:
+
+```bash
+az keyvault secret set --vault-name gw-tfstate-Vault --name sppassword --value <Client-Secret>
+
+az keyvault secret set --vault-name gw-tfstate-Vault --name spusername --value <ClientID>
+```
 
 ```bash
 export TF_VAR_client_id=xyzxyzxyzxyzxyzxyzxyzxyzxyzxyz
