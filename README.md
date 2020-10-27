@@ -129,6 +129,43 @@ The management console now accessible through the browser
 ```
 http://localhost:8080/
 ```
+### Standing up Management UI
+
+All of these commands are run int he root folder. Firstly create the namespace
+
+```
+kubectl create ns management-ui
+```
+
+Next use Helm to deploy the chart
+
+```
+helm install ./pod-creations/icap-management-ui/kube --namespace management-ui --generate-name
+```
+
+Services should start on their own and the management UI will be available from the public IP that is attached to the load balancer.
+
+To see this use the following command
+
+```
+❯ kubectl get service -n management-ui
+NAME                             TYPE           CLUSTER-IP    EXTERNAL-IP     PORT(S)        AGE
+icap-management-portal-service   LoadBalancer   xxx.xxx.xxx.xxx   xxx.xxx.xxx.xxx   80:32231/TCP   24h
+```
+
+### Standing up Transaction-Event-API
+
+All of these commands are run int he root folder. Firstly create the namespace
+
+```
+kubectl create ns transaction-event-api
+```
+
+Next use Helm to deploy the chart
+
+```
+helm install ./pod-creations/transaction-event-api/TransactionEventApi/charts --namespace management-ui --generate-name
+```
 
 ### Attaching ACRs to cluster
 
