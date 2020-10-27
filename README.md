@@ -118,7 +118,7 @@ If required, the following steps provide access to the RabbitMQ Management Conso
 
 Run the below command to enable the Management Plugin, this step takes a couple of minutes
 ```
-kubectl exec rabbitmq-controller-747n4 -- /bin/bash -c "rabbitmq-plugins enable rabbitmq_management"
+kubectl exec -it rabbitmq-controller-747n4 -- /bin/bash -c "rabbitmq-plugins enable rabbitmq_management"
 ```
 
 Setup of port forwarding from a local port (e.g. 8080) to the RabbitMQ Management Port
