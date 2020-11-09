@@ -14,7 +14,7 @@ data "azurerm_key_vault_secret" "sppassword" {
 }
 
 resource "azurerm_kubernetes_cluster" "icap-deploy" {
-  name                = "${var.prefix}-aks"
+  name                = "${var.prefix}-aks-NEU"
   location            = var.region
   resource_group_name = var.resource_group 
   dns_prefix          = "${var.prefix}-k8s"

@@ -8,6 +8,7 @@ LOCATION=NORTHEUROPE
 RESOURCE_GROUP_NAME=gw-icap-tfstate-$RANDOM
 STORAGE_ACCOUNT_NAME=tfstate$RANDOM
 CONTAINER_NAME=gw-icap-tfstate-$RANDOM
+SHARE_NAME=transactions
 TAGS='createdby=mattp'
 
 # Create resource group
@@ -17,12 +18,14 @@ az group create --name $RESOURCE_GROUP_NAME --location $LOCATION --tags $TAGS
 az storage account create --resource-group $RESOURCE_GROUP_NAME --name $STORAGE_ACCOUNT_NAME --sku Standard_LRS --encryption-services blob --tags $TAGS
 
 # Get storage account key
-ACCOUNT_KEY=$(az storage account keys list --resource-group $RESOURCE_GROUP_NAME --account-name $STORAGE_ACCOUNT_NAME --query [0].value -o tsv)
+ACCOUNT_KEY=$(az storage account keys list --resource-group $RESOURCE_GROUP_NAME --account-name $STORAGE_ACCOUNT_NAME --query "[0].value" | tr -d '"')
 
-# Create blob container
+# Create blob  
 az storage container create --name $CONTAINER_NAME --account-name $STORAGE_ACCOUNT_NAME --account-key $ACCOUNT_KEY
+
+# Create file share
+az storage share create --account-name $STORAGE_ACCOUNT_NAME --account-key $ACCOUNT_KEY --name $SHARE_NAME  --quota 1024 --enabled-protocols SMB --output none
 
 echo "storage_account_name: $STORAGE_ACCOUNT_NAME"
 echo "container_name: $CONTAINER_NAME"
 echo "access_key: $ACCOUNT_KEY"
-

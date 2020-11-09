@@ -1,7 +1,7 @@
 variable "resource_group" {
   description = "This is a consolidated name based on org, environment, region"
   type        = string
-  default 	  = "gw-icap-aks-deploy-NEU"
+  default 	  = "gw-icap-aks-deploy"
 }
 
 variable "region" {
