@@ -1,4 +1,4 @@
-DEVELOPMENT BRANCH
+COMPREHENSIVE GUIDE TO INSTALLATION FOUND HERE: [icap-terraform-aks-deployment](https://github.com/filetrust/icap-terraform-aks-deployment)
 
 # aks-deployment-icap
 

@@ -9,8 +9,6 @@ DOCKER_USERNAME=$(az keyvault secret show --name DH-SA-USERNAME --vault-name gw-
 DOCKER_PASSWORD=$(az keyvault secret show --name DH-SA-password --vault-name gw-tfstate-vault-13222 --query value -o tsv)
 FILESHARE_ACCOUNT_NAME=$(az keyvault secret show --name file-share-account --vault-name gw-tfstate-vault-13222 --query value -o tsv)
 FILESHARE_KEY=$(az keyvault secret show --name file-share-key --vault-name gw-tfstate-vault-13222 --query value -o tsv)
-TLS_KEY=$()
-TSL_CERT=$()
 
 # Namespace Variables
 NAMESPACE01="icap-adaptation"
@@ -34,12 +32,8 @@ kubectl create -n $NAMESPACE01 secret docker-registry regcred \
 	--docker-email=$USER_EMAIL
 
 # Create secret for file share - needs to be part of the 'icap-adaptation' namespace
-kubectl create -n $NAMESPACE01 secret generic transactionstoresecret \ 
-	--from-literal=accountName=$FILESHARE_ACCOUNT_NAME \
-	--from-literal=accountKey=$FILESHARE_KEY
+kubectl create -n $NAMESPACE01 secret generic transactionstoresecret --from-literal=accountName="$FILESHARE_ACCOUNT_NAME" --from-literal=accountKey="$FILESHARE_KEY"
 
 # Create secret for TLS certs & keys - needs to be part of the 'icap-adaptation' namespace
-kubectl create -n $NAMESPACE01 secret tls icap-server-tls \ 
-    --key tls.key  \ 
-    --cert certificate.crt
+kubectl create secret tls icap-server-tls-config -n $NAMESPACE01 --key tls.key --cert certificate.crt
 
