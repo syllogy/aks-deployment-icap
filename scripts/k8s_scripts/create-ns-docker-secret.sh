@@ -29,6 +29,4 @@ kubectl create -n $NAMESPACE01 secret docker-registry regcred \
 	--docker-password="$DOCKER_PASSWORD" \
 	--docker-email=$USER_EMAIL
 
-kubectl create -n $NAMESPACE01 secret generic transactionstoresecret \ 
-	--from-literal=accountName=$FILESHARE_ACCOUNT_NAME \
-	--from-literal=accountKey=$FILESHARE_KEY
+kubectl create -n $NAMESPACE01 secret generic transactionstoresecret --from-literal=accountName=$FILESHARE_ACCOUNT_NAME --from-literal=accountKey=$FILESHARE_KEY
