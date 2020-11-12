@@ -4,10 +4,10 @@
 # We cannot create this storage account and blob container using Terraform itself since
 # we are creating the remote state storage for Terraform and Terraform needs this storage in terraform init phase.
 
-LOCATION=UKSouth
-RESOURCE_GROUP_NAME=gw-icap-tfstate-$RANDOM
+LOCATION=EASTUS
+RESOURCE_GROUP_NAME=gw-icap-tfstate-useast-$RANDOM
 STORAGE_ACCOUNT_NAME=tfstate$RANDOM
-CONTAINER_NAME=gw-icap-tfstate-$RANDOM
+CONTAINER_NAME=gw-icap-tfstate-useast-$RANDOM
 SHARE_NAME=transactions
 TAGS='createdby=mattp'
 
@@ -24,7 +24,7 @@ ACCOUNT_KEY=$(az storage account keys list --resource-group $RESOURCE_GROUP_NAME
 az storage container create --name $CONTAINER_NAME --account-name $STORAGE_ACCOUNT_NAME --account-key $ACCOUNT_KEY
 
 # Create file share
-az storage share create --account-name $STORAGE_ACCOUNT_NAME --account-key $ACCOUNT_KEY --name $SHARE_NAME  --quota 1024 --enabled-protocols SMB --output none
+az storage share create --account-name $STORAGE_ACCOUNT_NAME --account-key $ACCOUNT_KEY --name $SHARE_NAME  --quota 100 --output none
 
 echo "storage_account_name: $STORAGE_ACCOUNT_NAME"
 echo "container_name: $CONTAINER_NAME"
