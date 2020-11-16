@@ -4,11 +4,13 @@
 # We cannot create this storage account and blob container using Terraform itself since
 # we are creating the remote state storage for Terraform and Terraform needs this storage in terraform init phase.
 
-LOCATION=UKSouth
-RESOURCE_GROUP_NAME=gw-icap-tfstate-neu-$RANDOM
-STORAGE_ACCOUNT_NAME=tfstate$RANDOM
-CONTAINER_NAME=gw-icap-tfstate-neu-$RANDOM
-SHARE_NAME=transactions
+LOCATION=EASTUS
+RESOURCE_GROUP_NAME=gw-icap-tfstate-eastus
+STORAGE_ACCOUNT_NAME=eastustfstate$RANDOM
+CONTAINER_NAME=gw-icap-tfstate-eastus
+SHARE_NAME01=transactions
+SHARE_NAME02=policies
+VAULT_NAME=gw-tfstate-vault-eastus
 TAGS='createdby=mattp'
 
 # Create resource group
@@ -24,7 +26,13 @@ ACCOUNT_KEY=$(az storage account keys list --resource-group $RESOURCE_GROUP_NAME
 az storage container create --name $CONTAINER_NAME --account-name $STORAGE_ACCOUNT_NAME --account-key $ACCOUNT_KEY
 
 # Create file share
-az storage share create --account-name $STORAGE_ACCOUNT_NAME --account-key $ACCOUNT_KEY --name $SHARE_NAME  --quota 1024 --enabled-protocols SMB --output none
+az storage share create --account-name $STORAGE_ACCOUNT_NAME --account-key $ACCOUNT_KEY --name $SHARE_NAME01  --quota 100 --output none
+
+# Create file share
+az storage share create --account-name $STORAGE_ACCOUNT_NAME --account-key $ACCOUNT_KEY --name $SHARE_NAME02  --quota 100 --output none
+
+# Create Key Vault
+az keyvault create --name $VAULT_NAME --resource-group $RESOURCE_GROUP_NAME --location $LOCATION
 
 echo "storage_account_name: $STORAGE_ACCOUNT_NAME"
 echo "container_name: $CONTAINER_NAME"
