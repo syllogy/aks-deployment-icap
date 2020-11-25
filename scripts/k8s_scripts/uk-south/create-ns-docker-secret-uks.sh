@@ -18,13 +18,11 @@ NCFS_POLICY_REF=$(az keyvault secret show --name ncfs-policy-ref --vault-name gw
 
 # Namspace Variables
 NAMESPACE01="icap-adaptation"
-NAMESPACE02="management-ui"
-NAMESPACE03="transaction-event-api"
-NAMESPACE04="rabbitmq-controller"
-NAMESPACE05="policy-management-api"
-NAMESPACE06="prometheus-stack"
-NAMESPACE07="reference-ncfs-service"
-NAMESPACE08="ncfs-policy-update-service"
+NAMESPACE02="rabbitmq-controller"
+NAMESPACE03="prometheus-stack"
+NAMESPACE04="reference-ncfs-service"
+NAMESPACE05="ncfs-policy-update-service"
+NAMESPACE06="icap-administration"
 
 # Create namespaces for deployment
 kubectl create ns $NAMESPACE01
@@ -33,9 +31,6 @@ kubectl create ns $NAMESPACE03
 kubectl create ns $NAMESPACE04
 kubectl create ns $NAMESPACE05
 kubectl create ns $NAMESPACE06
-kubectl create ns $NAMESPACE07
-kubectl create ns $NAMESPACE08
-
 
 # Create secret for Docker Registry - this only needs to be added to the 'icap-adaptation' namespace
 kubectl create -n $NAMESPACE01 secret docker-registry regcred \
@@ -48,15 +43,21 @@ kubectl create -n $NAMESPACE01 secret docker-registry regcred \
 kubectl create -n $NAMESPACE01 secret generic policyupdateserviceref --from-literal=TokenUsername=$TOKEN_USERNAME --from-literal=TokenPassword=$TOKEN_PASSWORD --from-literal=PolicyUpdateServiceEndpointCsv=$POLICY_CSV
 
 # Create secret for file share - needs to be part of the 'transaction-event-api' namespace
-kubectl create -n $NAMESPACE03 secret generic transactionstoresecret --from-literal=accountName=$FILESHARE_ACCOUNT_NAME --from-literal=accountKey=$FILESHARE_KEY --from-literal=TransactionStoreConnectionStringCsv=$TRANSACTION_CSV
+kubectl create -n $NAMESPACE06 secret generic transactionstoresecret --from-literal=accountName=$FILESHARE_ACCOUNT_NAME --from-literal=accountKey=$FILESHARE_KEY --from-literal=TransactionStoreConnectionStringCsv=$TRANSACTION_CSV
 
 # Create secret for file share - needs to be part of the 'policy-management-api' namespace
-kubectl create -n $NAMESPACE05 secret generic policystoresecret --from-literal=accountName=$FILESHARE_ACCOUNT_NAME --from-literal=accountKey=$FILESHARE_KEY 
+kubectl create -n $NAMESPACE06 secret generic policystoresecret --from-literal=accountName=$FILESHARE_ACCOUNT_NAME --from-literal=accountKey=$FILESHARE_KEY 
 
-kubectl create -n $NAMESPACE05 secret generic policyupdateserviceref --from-literal=TokenUsername=$TOKEN_USERNAME --from-literal=TokenPassword=$TOKEN_PASSWORD --from-literal=PolicyUpdateServiceEndpointCsv=$POLICY_CSV
+kubectl create -n $NAMESPACE06 secret generic policyupdateserviceref --from-literal=TokenUsername=$TOKEN_USERNAME --from-literal=TokenPassword=$TOKEN_PASSWORD --from-literal=PolicyUpdateServiceEndpointCsv=$POLICY_CSV --from-literal=NcfsPolicyUpdateServiceEndpointCsv=$NCFS_POLICY_REF
+
+kubectl create -n $NAMESPACE06 secret generic ncfspolicyupdateservicesecret --from-literal=username=$TOKEN_USERNAME --from-literal=password=$TOKEN_PASSWORD --from-literal=NcfsPolicyUpdateServiceEndpointCsv=$NCFS_POLICY_REF
+
+kubectl create -n $NAMESPACE06 secret generic ncfspolicyupdateserviceref --from-literal=username=$TOKEN_USERNAME --from-literal=password=$TOKEN_PASSWORD --from-literal=NcfsPolicyUpdateServiceEndpointCsv=$NCFS_POLICY_REF
 
 # Create secret for file share - needs to be part of the 'ncfs-policy-update-service' namespace
-kubectl create -n $NAMESPACE08 secret generic ncfspolicyupdateservicesecret --from-literal=TokenUsername=$TOKEN_USERNAME --from-literal=TokenPassword=$TOKEN_PASSWORD --from-literal=NcfsPolicyUpdateServiceEndpointCsv=$NCFS_POLICY_REF
+kubectl create -n $NAMESPACE08 secret generic ncfspolicyupdateservicesecret --from-literal=username=$TOKEN_USERNAME --from-literal=password=$TOKEN_PASSWORD --from-literal=NcfsPolicyUpdateServiceEndpointCsv=$NCFS_POLICY_REF
+
+kubectl create -n $NAMESPACE08 secret generic ncfspolicyupdateserviceref --from-literal=username=$TOKEN_USERNAME --from-literal=password=$TOKEN_PASSWORD --from-literal=NcfsPolicyUpdateServiceEndpointCsv=$NCFS_POLICY_REF
 
 # Create secret for TLS certs & keys - needs to be part of the 'icap-adaptation' namespace
 kubectl create -n $NAMESPACE01 secret tls icap-service-tls-config --key tls.key --cert certificate.crt
