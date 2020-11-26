@@ -22,10 +22,10 @@ variable "secret_sp_2" {
   default     = "sppassword"
 }
 
-variable "prefix" {
+variable "cluster_name" {
   description = "This is a consolidated name based on org, environment, region"
   type        = string
-  default     = "gw-icap"
+  default     = "gw-icap-useast-main"
 }
 
 variable "keyvault_name" {

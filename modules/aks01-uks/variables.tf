@@ -1,7 +1,7 @@
 variable "resource_group" {
   description = "This is a consolidated name based on org, environment, region"
   type        = string
-  default 	  = "gw-icap-aks-deploy"
+  default 	  = "gw-icap-aks-uks-develop"
 }
 
 variable "region" {
@@ -22,10 +22,10 @@ variable "secret_sp_2" {
   default     = "sppassword"
 }
 
-variable "prefix" {
+variable "cluster_name" {
   description = "This is a consolidated name based on org, environment, region"
   type        = string
-  default     = "gw-icap"
+  default     = "gw-icap-uks-develop"
 }
 
 variable "keyvault_name" {

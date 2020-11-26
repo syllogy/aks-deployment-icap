@@ -16,9 +16,9 @@ module "create_aks_cluster_NorthEurope" {
 }
 
 module "create_resource_group_USEast" {
-	source						="./modules/resource-group03-eastus"
+	source						="./modules/resource-group03-useast"
 }
 
 module "create_aks_cluster_USEast" {
-	source						="./modules/aks03-eastus"
+	source						="./modules/aks03-useast"
 }
