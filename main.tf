@@ -1,5 +1,5 @@
 
-module "create_resource_group_UKSouth" {
+module "	" {
 	source						="./modules/resource-group01-uks"
 }
 
