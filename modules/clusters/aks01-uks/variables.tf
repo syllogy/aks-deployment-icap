@@ -1,13 +1,13 @@
 variable "resource_group" {
   description = "This is a consolidated name based on org, environment, region"
   type        = string
-  default 	  = "gw-icap-aks-deploy-useast"
+  default 	  = "gw-icap-aks-uks-develop"
 }
 
 variable "region" {
   description = "The Azure Region"
   type        = string
-  default     = "EASTUS"
+  default     = "UKSouth"
 }
 
 variable "secret_sp_1" {
@@ -25,17 +25,23 @@ variable "secret_sp_2" {
 variable "cluster_name" {
   description = "This is a consolidated name based on org, environment, region"
   type        = string
-  default     = "gw-icap-useast-main"
+  default     = "gw-icap-uks-develop"
 }
 
 variable "keyvault_name" {
   description = "This is the name for the Azure Key Vault"
   type        = string
-  default     = "gw-tfstate-vault-13222"
+  default     = "gw-tfstate-Vault"
 }
 
 variable "vault_resourcegroup_name" {
   description = "This is the resource group containing the Azure Key Vault"
   type        = string
-  default     = "gw-icap-tfstate-11885"
+  default     = "gw-icap-tfstate"
+}
+
+variable "node_name" {
+  description = "This is the resource group containing the Azure Key Vault"
+  type        = string
+  default     = "gwicapnode"
 }

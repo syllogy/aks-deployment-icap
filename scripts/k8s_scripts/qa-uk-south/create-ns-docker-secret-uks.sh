@@ -5,15 +5,15 @@
 # Variables
 DOCKER_SERVER="https://index.docker.io/v1/"
 USER_EMAIL="mpigram@glasswallsolutions.com"
-DOCKER_USERNAME=$(az keyvault secret show --name DH-SA-USERNAME --vault-name gw-tfstate-vault-13222 --query value -o tsv)
-DOCKER_PASSWORD=$(az keyvault secret show --name DH-SA-password --vault-name gw-tfstate-vault-13222 --query value -o tsv)
-FILESHARE_ACCOUNT_NAME=$(az keyvault secret show --name file-share-account --vault-name gw-tfstate-vault-13222 --query value -o tsv)
-FILESHARE_KEY=$(az keyvault secret show --name file-share-key --vault-name gw-tfstate-vault-13222 --query value -o tsv)
-TOKEN_USERNAME=$(az keyvault secret show --name token-username --vault-name gw-tfstate-vault-13222 --query value -o tsv)
-TOKEN_PASSWORD=$(az keyvault secret show --name token-password --vault-name gw-tfstate-vault-13222 --query value -o tsv)
-TRANSACTION_CSV=$(az storage account show-connection-string -g gw-icap-tfstate-11885 -n tfstate3119 --query connectionString | tr -d '"')
-POLICY_CSV=$(az keyvault secret show --name policy-csv --vault-name gw-tfstate-vault-13222 --query value -o tsv)
-NCFS_POLICY_REF=$(az keyvault secret show --name ncfs-policy-ref --vault-name gw-tfstate-vault-13222 --query value -o tsv)
+DOCKER_USERNAME=$(az keyvault secret show --name DH-SA-USERNAME --vault-name gw-tfstate-Vault --query value -o tsv)
+DOCKER_PASSWORD=$(az keyvault secret show --name DH-SA-password --vault-name gw-tfstate-Vault --query value -o tsv)
+FILESHARE_ACCOUNT_NAME=$(az keyvault secret show --name file-share-account --vault-name gw-tfstate-Vault --query value -o tsv)
+FILESHARE_KEY=$(az keyvault secret show --name file-share-key --vault-name gw-tfstate-Vault --query value -o tsv)
+TOKEN_USERNAME=$(az keyvault secret show --name token-username --vault-name gw-tfstate-Vault --query value -o tsv)
+TOKEN_PASSWORD=$(az keyvault secret show --name token-password --vault-name gw-tfstate-Vault --query value -o tsv)
+TRANSACTION_CSV=$(az storage account show-connection-string -g gw-icap-tfstate -n tfstate263 --query connectionString | tr -d '"')
+POLICY_CSV=$(az keyvault secret show --name policy-csv --vault-name gw-tfstate-Vault --query value -o tsv)
+NCFS_POLICY_REF=$(az keyvault secret show --name ncfs-policy-ref --vault-name gw-tfstate-Vault --query value -o tsv)
 
 
 # Namspace Variables

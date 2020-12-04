@@ -13,6 +13,15 @@ data "azurerm_key_vault_secret" "sppassword" {
   key_vault_id = data.azurerm_key_vault.keyvault.id
 }
 
+resource "azurerm_resource_group" "resource_group" {
+  name     = var.resource_group
+  location = var.region
+
+    tags = {
+    created_by = "Mattp" 
+  }
+}
+
 resource "azurerm_kubernetes_cluster" "icap-deploy" {
   name                = var.cluster_name
   location            = var.region
@@ -20,9 +29,9 @@ resource "azurerm_kubernetes_cluster" "icap-deploy" {
   dns_prefix          = "${var.cluster_name}-k8s"
 
   default_node_pool {
-    name            = "icaptestnode"
-    node_count      = 1
-    vm_size         = "Standard_DS15_v2"
+    name            = var.node_name
+    node_count      = 4
+    vm_size         = "Standard_DS4_v2"
     os_disk_size_gb = 100
   }
 
