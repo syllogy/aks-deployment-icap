@@ -1,4 +1,3 @@
-
 module "create_resource_group_UKSouth" {
 	source						="./modules/resource-group01-uks"
 }
@@ -29,4 +28,8 @@ module "create_resource_group_QA-UKSouth" {
 
 module "create_aks_cluster_QA-UKSouth" {
 	source						="./modules/clusters/aks04-qa-uks"
+}
+
+module "create_storage_account_NEU" {
+	source						="./modules/storage-accounts/storage-account-neu"
 }

@@ -24,8 +24,8 @@ resource "azurerm_resource_group" "resource_group" {
 
 resource "azurerm_kubernetes_cluster" "icap-deploy" {
   name                = var.cluster_name
-  location            = var.region
-  resource_group_name = var.resource_group 
+  location            = azurerm_resource_group.resource_group.location
+  resource_group_name = azurerm_resource_group.resource_group.name
   dns_prefix          = "${var.cluster_name}-k8s"
 
   default_node_pool {

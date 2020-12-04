@@ -72,3 +72,5 @@ kubectl create -n $NAMESPACE03 secret generic ncfspolicyupdateserviceref --from-
 
 # Create secret for TLS certs & keys - needs to be part of the 'icap-adaptation' namespace
 kubectl create -n $NAMESPACE01 secret tls icap-service-tls-config --key tls.key --cert certificate.crt
+
+#  az storage account list -g gw-icap-tfstate --query "[].name" | tr -d '"[]'
