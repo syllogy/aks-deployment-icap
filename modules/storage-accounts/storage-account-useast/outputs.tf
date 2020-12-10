@@ -1,5 +1,5 @@
 output "name" {
-    value = "${azurerm_storage_account.storage_account.name}"
+    value = "${azurerm_storage_account.storage.name}"
 }
 
 output "resource_group_name" {
