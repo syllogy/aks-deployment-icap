@@ -11,8 +11,7 @@ FILESHARE_ACCOUNT_NAME=$(az keyvault secret show --name file-share-account --vau
 FILESHARE_KEY=$(az keyvault secret show --name file-share-key --vault-name gw-tfstate-Vault --query value -o tsv)
 TOKEN_USERNAME=$(az keyvault secret show --name token-username --vault-name gw-tfstate-Vault --query value -o tsv)
 TOKEN_PASSWORD=$(az keyvault secret show --name token-password --vault-name gw-tfstate-Vault --query value -o tsv)
-NCFS_POLICY_REF=$(az keyvault secret show --name ncfs-policy-ref --vault-name gw-tfstate-Vault --query value -o tsv)
-
+TRANSACTION_CSV=$(az storage account show-connection-string -g gw-icap-tfstate -n tfstate263 --query connectionString | tr -d '"')
 
 # Namspace Variables
 NAMESPACE01="icap-adaptation"
@@ -43,7 +42,7 @@ kubectl create -n $NAMESPACE01 secret generic ncfspolicyupdateservicesecret --fr
 kubectl create -n $NAMESPACE01 secret generic transactionstoresecret --from-literal=accountName=$FILESHARE_ACCOUNT_NAME --from-literal=accountKey=$FILESHARE_KEY
 
 # Create secret for file share - needs to be part of the 'icap-administration' namespace
-kubectl create -n $NAMESPACE04 secret generic transactionstoresecret --from-literal=accountName=$FILESHARE_ACCOUNT_NAME --from-literal=accountKey=$FILESHARE_KEY
+kubectl create -n $NAMESPACE04 secret generic transactionstoresecret --from-literal=accountName=$FILESHARE_ACCOUNT_NAME --from-literal=accountKey=$FILESHARE_KEY --from-literal=TransactionStoreConnectionStringCsv=$TRANSACTION_CSV
 
 kubectl create -n $NAMESPACE04 secret generic policyupdateserviceref --from-literal=TokenUsername=$TOKEN_USERNAME --from-literal=TokenPassword=$TOKEN_PASSWORD 
 
@@ -54,12 +53,6 @@ kubectl create -n $NAMESPACE04 secret generic ncfspolicyupdateservicesecret --fr
 kubectl create -n $NAMESPACE04 secret generic ncfspolicyupdateserviceref --from-literal=username=$TOKEN_USERNAME --from-literal=password=$TOKEN_PASSWORD
 
 # Create secret for file share - needs to be part of the 'icap-ncfs' namespace
-kubectl create -n $NAMESPACE03 secret generic transactionstoresecret --from-literal=accountName=$FILESHARE_ACCOUNT_NAME --from-literal=accountKey=$FILESHARE_KEY
-
-kubectl create -n $NAMESPACE03 secret generic policystoresecret --from-literal=accountName=$FILESHARE_ACCOUNT_NAME --from-literal=accountKey=$FILESHARE_KEY 
-
-kubectl create -n $NAMESPACE03 secret generic policyupdateserviceref --from-literal=TokenUsername=$TOKEN_USERNAME --from-literal=TokenPassword=$TOKEN_PASSWORD 
-
 kubectl create -n $NAMESPACE03 secret generic ncfspolicyupdateservicesecret --from-literal=username=$TOKEN_USERNAME --from-literal=password=$TOKEN_PASSWORD
 
 kubectl create -n $NAMESPACE03 secret generic ncfspolicyupdateserviceref --from-literal=username=$TOKEN_USERNAME --from-literal=password=$TOKEN_PASSWORD
