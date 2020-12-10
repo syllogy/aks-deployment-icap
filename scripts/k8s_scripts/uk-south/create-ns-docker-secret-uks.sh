@@ -14,7 +14,7 @@ DOCKER_PASSWORD=$(az keyvault secret show --name DH-SA-password --vault-name $VA
 FILESHARE_ACCOUNT_NAME=$(az storage account list -g $RESOURECE_GROUP --query "[].name" | awk 'FNR == 2' | tr -d '"[]\040')
 FILESHARE_KEY=$(az storage account keys list -g $RESOURECE_GROUP -n $FILESHARE_ACCOUNT_NAME --query "[].value" | awk 'FNR == 2' | tr -d '",\040')
 TOKEN_USERNAME=$(az keyvault secret show --name token-username --vault-name $VAULT_NAME --query value -o tsv)
-TOKEN_PASSWORD=$(az keyvault secret show --name token-password --vault-name $VAULT_NAME --query value -o tsv)
+TOKEN_PASSWORD=$(tr -dc 'A-Za-z0-9!"#$%&'\''()*+,-./:;<=>?@[\]^_`{|}~' </dev/urandom | head -c 20  ; echo)
 TRANSACTION_CSV=$(az storage account show-connection-string -g $RESOURECE_GROUP -n $FILESHARE_ACCOUNT_NAME --query connectionString | tr -d '"')
 
 # Namspace Variables
@@ -22,14 +22,12 @@ NAMESPACE01="icap-adaptation"
 NAMESPACE02="icap-prometheus-stack"
 NAMESPACE03="icap-ncfs"
 NAMESPACE04="icap-administration"
-NAMESPACE05="argocd"
 
 # Create namespaces for deployment
 kubectl create ns $NAMESPACE01
 kubectl create ns $NAMESPACE02
 kubectl create ns $NAMESPACE03
 kubectl create ns $NAMESPACE04
-kubectl create ns $NAMESPACE05
 
 # Create secret for Docker Registry - this only needs to be added to the 'icap-adaptation' namespace
 kubectl create -n $NAMESPACE01 secret docker-registry regcred \

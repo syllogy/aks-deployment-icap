@@ -31,13 +31,13 @@ variable "cluster_name" {
 variable "keyvault_name" {
   description = "This is the name for the Azure Key Vault"
   type        = string
-  default     = "gw-tfstate-vault-13222"
+  default     = "gw-tfstate-Vault"
 }
 
 variable "vault_resourcegroup_name" {
   description = "This is the resource group containing the Azure Key Vault"
   type        = string
-  default     = "gw-icap-tfstate-11885"
+  default     = "gw-icap-tfstate"
 }
 
 variable "node_name" {
