@@ -15,6 +15,10 @@ module "create_aks_cluster_QA-UKSouth" {
 	source						="./modules/clusters/aks04-qa-uks"
 }
 
+module "create_aks_cluster_ARGOCD" {
+	source						="./modules/clusters/argocd-command-cluster"
+}
+
 # Storage Account Modules
 module "create_storage_account_NEU" {
 	source						="./modules/storage-accounts/storage-account-neu"

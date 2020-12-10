@@ -11,9 +11,9 @@ output "cluster_dns" {
 }
 
 output "secret_value_1" {
-  value = data.azurerm_key_vault_secret.spusername.value
+  value = "${data.azurerm_key_vault_secret.spusername.value}"
 }
 
 output "secret_value_2" {
-  value = data.azurerm_key_vault_secret.sppassword.value
+  value = "${data.azurerm_key_vault_secret.sppassword.value}"
 }

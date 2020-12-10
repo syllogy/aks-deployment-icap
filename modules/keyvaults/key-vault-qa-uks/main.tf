@@ -1,16 +1,3 @@
-provider "azurerm" {
-
-  version         = "=2.35.0"
-  subscription_id = "b8177f86-515f-4bff-bd08-1b9535dbc31b"
-  tenant_id       = "7049e6a3-141d-463a-836b-1ba40d3ff653"
-
-  features {
-    key_vault {
-      purge_soft_delete_on_destroy = true
-    }
-  }
-}
-
 data "azurerm_client_config" "current" {
 }
 

@@ -21,3 +21,27 @@ variable "file_share_name02" {
   type        = string
   default     = "policies"
 }
+
+variable "account_tier" {
+  description = "The tier of storage account"
+  type        = string
+  default     = "Premium"
+}
+
+variable "account_kind" {
+  description = "The kind of the storage account (cool, hot, archive)"
+  type        = string
+  default     = "FileStorage"
+}
+
+variable "application_replication_type" {
+  description = "The Storage Account replication type"
+  type        = string
+  default     = "LRS"
+}
+
+variable "access_tier" {
+  description = "The Storage Account replication type"
+  type        = string
+  default     = "Hot"
+}

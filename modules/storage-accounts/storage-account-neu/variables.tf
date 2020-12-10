@@ -22,12 +22,6 @@ variable "file_share_name02" {
   default     = "policies"
 }
 
-variable "blob_storage_name" {
-  description = "The name of the file share"
-  type        = string
-  default     = "gw-icap-blob-neu"
-}
-
 variable "account_tier" {
   description = "The tier of storage account"
   type        = string
@@ -37,7 +31,7 @@ variable "account_tier" {
 variable "account_kind" {
   description = "The kind of the storage account (cool, hot, archive)"
   type        = string
-  default     = "StorageV2"
+  default     = "FileStorage"
 }
 
 variable "application_replication_type" {
@@ -47,7 +41,7 @@ variable "application_replication_type" {
 }
 
 variable "access_tier" {
-  description = "The Storage Account replication type"
+  description = "The Storage Account access tier"
   type        = string
   default     = "Hot"
 }
