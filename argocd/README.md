@@ -25,8 +25,8 @@ ArgoCD is very easy to install and set up - if you want to get it working on you
     - [Sync an ArgoCD app](#sync-an-argocd-app)
   - [Commands to deploy all services using ArgoCD](#commands-to-deploy-all-services-using-argocd)
   - [ArgoCD Cheat Sheet](#argocd-cheat-sheet)
-    - [Sync all apps](#sync-all-apps)
-    - [Delete all apps](#delete-all-apps)
+    - [Sync sing and multiple apps](#sync-sing-and-multiple-apps)
+    - [Delete single & all apps](#delete-single--all-apps)
     - [Add context for easy switching between clusters](#add-context-for-easy-switching-between-clusters)
 
 
@@ -243,14 +243,25 @@ ICAP-Administration
 
 ### ArgoCD Cheat Sheet
 
-#### Sync all apps 
+#### Sync sing and multiple apps 
 
+Sync single apps
+```
+argodcd app sync <app service name>
+
+Sync all apps
 ```bash
 argocd app list -o name | xargs argocd app sync
 ```
 
-#### Delete all apps
+#### Delete single & all apps
 
+Delete a single app
+```
+argocd app sync
+```
+
+Delete all apps
 ```
 argocd app list -o name | xargs argocd app sync
 ```
