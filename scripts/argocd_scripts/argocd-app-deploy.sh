@@ -40,6 +40,9 @@ NS_RABBIT="default"
 REV_MAIN="main"
 REV_DEVELOP="develop"
 
+# Parameters
+PARAM_REMOVE_SECRETS="secrets=null"
+
 # Github repo
 ICAP_REPO="https://github.com/filetrust/icap-infrastructure"
 
@@ -61,7 +64,7 @@ argocd app create $PATH_NCFS-neu-main --repo $ICAP_REPO --path $PATH_NCFS --dest
 # # Create UKS Cluster Apps
 # argocd app create $RABBITMQ_OPERATOR-uks-develop --repo $ICAP_REPO --path $PATH_RABBITMQ --dest-server https://$UKS_CLUSTER_FQDN:443 --dest-namespace $NS_RABBIT --revision $REV_DEVELOP
 
-# argocd app create $ADAPTATION_SERVICE-uks-develop --repo $ICAP_REPO --path $PATH_ADAPTATION --dest-server https://$UKS_CLUSTER_FQDN:443 --dest-namespace $NS_ADAPTATION --revision $REV_DEVELOP
+argocd app create $ADAPTATION_SERVICE-uks-develop --repo $ICAP_REPO --path $PATH_ADAPTATION --dest-server https://$UKS_CLUSTER_FQDN:443 --dest-namespace $NS_ADAPTATION --revision $REV_DEVELOP --parameter $PARAM_REMOVE_SECRETS
 
 # argocd app create $ADMINISTRATION_SERVICE-uks-develop --repo $ICAP_REPO --path $PATH_ADMINISTRATION --dest-server https://$UKS_CLUSTER_FQDN:443 --dest-namespace $NS_ADMINISTRATION --revision $REV_DEVELOP
 
