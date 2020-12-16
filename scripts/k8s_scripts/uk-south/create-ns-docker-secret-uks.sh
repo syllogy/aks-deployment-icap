@@ -30,7 +30,7 @@ kubectl create ns $NAMESPACE03
 kubectl create ns $NAMESPACE04
 
 # Create secret for Docker Registry - this only needs to be added to the 'icap-adaptation' namespace
-kubectl create -n $NAMESPACE01 secret docker-registry regcred \
+kubectl create -n $NAMESPACE01 secret docker-registry containerregistry \
 	--docker-server=$DOCKER_SERVER \
 	--docker-username=$DOCKER_USERNAME \
 	--docker-password="$DOCKER_PASSWORD" \
