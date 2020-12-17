@@ -50,9 +50,11 @@ kubectl create -n $NAMESPACE01 secret generic transactionqueryservicesecret --fr
 # Create secret for file share - needs to be part of the 'icap-administration' namespace
 kubectl create -n $NAMESPACE04 secret generic transactionstoresecret --from-literal=accountName=$FILESHARE_ACCOUNT_NAME --from-literal=accountKey=$FILESHARE_KEY --from-literal=TransactionStoreConnectionStringCsv=$TRANSACTION_CSV
 
-kubectl create -n $NAMESPACE04 secret generic policyupdateserviceref --from-literal=TokenUsername=$TOKEN_USERNAME --from-literal=TokenPassword=$TOKEN_PASSWORD 
+kubectl create -n $NAMESPACE04 secret generic policyupdateserviceref --from-literal=username=$TOKEN_USERNAME --from-literal=password=$TOKEN_PASSWORD 
 
-kubectl create -n $NAMESPACE04 secret generic policystoresecret --from-literal=accountName=$FILESHARE_ACCOUNT_NAME --from-literal=accountKey=$FILESHARE_KEY
+kubectl create -n $NAMESPACE04 secret generic policystoresecret --from-literal=azurestorageaccountname=$FILESHARE_ACCOUNT_NAME --from-literal=azurestorageaccountkey=$FILESHARE_KEY
+
+kubectl create -n $NAMESPACE04 secret generic transactionqueryserviceref --from-literal=username=$TOKEN_USERNAME --from-literal=password=$TOKEN_PASSWORD
 
 kubectl create -n $NAMESPACE04 secret generic ncfspolicyupdateserviceref --from-literal=username=$TOKEN_USERNAME --from-literal=password=$TOKEN_PASSWORD
 
