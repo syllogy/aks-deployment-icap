@@ -6,3 +6,4 @@ terraform.tfvars.old
 *.backup
 terafform.tfvars.old
 modules/aks/variables.tf
+terraform.tfstate.*.backup
