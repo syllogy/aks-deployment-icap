@@ -22,12 +22,14 @@ NAMESPACE01="icap-adaptation"
 NAMESPACE02="icap-prometheus-stack"
 NAMESPACE03="icap-ncfs"
 NAMESPACE04="icap-administration"
+NAMESPACE05="icap-rabbit-operator"
 
 # Create namespaces for deployment
 kubectl create ns $NAMESPACE01
 kubectl create ns $NAMESPACE02
 kubectl create ns $NAMESPACE03
 kubectl create ns $NAMESPACE04
+kubectl create ns $NAMESPACE05
 
 # Create secret for Docker Registry - this only needs to be added to the 'icap-adaptation' and 'icap-administration' namespaces
 kubectl create -n $NAMESPACE01 secret docker-registry regcred \

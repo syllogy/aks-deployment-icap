@@ -34,7 +34,7 @@ PATH_RABBITMQ="rabbitmq-operator"
 NS_ADAPTATION="icap-adaptation"
 NS_ADMINISTRATION="icap-administration"
 NS_NCFS="icap-ncfs"
-NS_RABBIT="default"
+NS_RABBIT="icap-rabbit-operator"
 
 # Revisions
 REV_MAIN="main"
@@ -53,13 +53,13 @@ argocd cluster add $QA_UKS_CONTEXT
 argocd cluster add $USEAST_CONTEXT
 
 # Create NEU Cluster Apps
-argocd app create $RABBITMQ_OPERATOR-neu-main --repo $ICAP_REPO --path $PATH_RABBITMQ --dest-server https://$NEU_CLUSTER_FQDN:443 --dest-namespace $NS_RABBIT --revision $REV_MAIN
+argocd app create $RABBITMQ_OPERATOR-neu-main --repo $ICAP_REPO --path $PATH_RABBITMQ --dest-server https://$NEU_CLUSTER_FQDN:443 --dest-namespace $NS_RABBIT --revision $REV_MAIN --parameter $PARAM_REMOVE_SECRETS
 
-argocd app create $ADAPTATION_SERVICE-neu-main --repo $ICAP_REPO --path $PATH_ADAPTATION --dest-server https://$NEU_CLUSTER_FQDN:443 --dest-namespace $NS_ADAPTATION --revision $REV_MAIN
+argocd app create $ADAPTATION_SERVICE-neu-main --repo $ICAP_REPO --path $PATH_ADAPTATION --dest-server https://$NEU_CLUSTER_FQDN:443 --dest-namespace $NS_ADAPTATION --revision $REV_MAIN --parameter $PARAM_REMOVE_SECRETS
 
-argocd app create $ADMINISTRATION_SERVICE-neu-main --repo $ICAP_REPO --path $PATH_ADMINISTRATION --dest-server https://$NEU_CLUSTER_FQDN:443 --dest-namespace $NS_ADMINISTRATION --revision $REV_MAIN
+argocd app create $ADMINISTRATION_SERVICE-neu-main --repo $ICAP_REPO --path $PATH_ADMINISTRATION --dest-server https://$NEU_CLUSTER_FQDN:443 --dest-namespace $NS_ADMINISTRATION --revision $REV_MAIN --parameter $PARAM_REMOVE_SECRETS
 
-argocd app create $PATH_NCFS-neu-main --repo $ICAP_REPO --path $PATH_NCFS --dest-server https://$NEU_CLUSTER_FQDN:443 --dest-namespace $NS_NCFS --revision $REV_MAIN
+argocd app create $PATH_NCFS-neu-main --repo $ICAP_REPO --path $PATH_NCFS --dest-server https://$NEU_CLUSTER_FQDN:443 --dest-namespace $NS_NCFS --revision $REV_MAIN --parameter $PARAM_REMOVE_SECRETS
 
 # # Create UKS Cluster Apps
 argocd app create $RABBITMQ_OPERATOR-uks-develop --repo $ICAP_REPO --path $PATH_RABBITMQ --dest-server https://$UKS_CLUSTER_FQDN:443 --dest-namespace $NS_RABBIT --revision $REV_DEVELOP --parameter $PARAM_REMOVE_SECRETS
@@ -71,7 +71,7 @@ argocd app create $ADMINISTRATION_SERVICE-uks-develop --repo $ICAP_REPO --path $
 argocd app create $PATH_NCFS-uks-develop --repo $ICAP_REPO --path $PATH_NCFS --dest-server https://$UKS_CLUSTER_FQDN:443 --dest-namespace $NS_NCFS --revision $REV_DEVELOP --parameter $PARAM_REMOVE_SECRETS
 
 # Create QA-UKS Cluster Apps
-argocd app create $RABBITMQ_OPERATOR-qa-main --repo $ICAP_REPO --path $PATH_RABBITMQ --dest-server https://$QA_UKS_CLUSTER_FQDN:443 --dest-namespace $NS_RABBIT --revision $REV_MAIN
+argocd app create $RABBITMQ_OPERATOR-qa-main --repo $ICAP_REPO --path $PATH_RABBITMQ --dest-server https://$QA_UKS_CLUSTER_FQDN:443 --dest-namespace $NS_RABBIT --revision $REV_MAIN 
 
 argocd app create $ADAPTATION_SERVICE-qa-main --repo $ICAP_REPO --path $PATH_ADAPTATION --dest-server https://$QA_UKS_CLUSTER_FQDN:443 --dest-namespace $NS_ADAPTATION --revision $REV_MAIN
 

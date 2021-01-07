@@ -22,12 +22,14 @@ NAMESPACE01="icap-adaptation"
 NAMESPACE02="icap-prometheus-stack"
 NAMESPACE03="icap-ncfs"
 NAMESPACE04="icap-administration"
+NAMESPACE05="icap-rabbit-operator"
 
 # Create namespaces for deployment
 kubectl create ns $NAMESPACE01
 kubectl create ns $NAMESPACE02
 kubectl create ns $NAMESPACE03
 kubectl create ns $NAMESPACE04
+kubectl create ns $NAMESPACE05
 
 # Create secret for Docker Registry - this only needs to be added to the 'icap-adaptation' and 'icap-administration' namespaces
 kubectl create -n $NAMESPACE01 secret docker-registry regcred \
@@ -41,14 +43,16 @@ kubectl create -n $NAMESPACE01 secret generic policyupdateservicesecret --from-l
 
 kubectl create -n $NAMESPACE01 secret generic ncfspolicyupdateservicesecret --from-literal=username=$TOKEN_USERNAME --from-literal=password=$TOKEN_PASSWORD
 
-kubectl create -n $NAMESPACE01 secret generic transactionstoresecret --from-literal=azurestorageaccountname=$FILESHARE_ACCOUNT_NAME --from-literal=azurestorageaccountkey=$FILESHARE_KEY
+kubectl create -n $NAMESPACE01 secret generic transactionstoresecret --from-literal=accountName=$FILESHARE_ACCOUNT_NAME --from-literal=accountKey=$FILESHARE_KEY
 
 kubectl create -n $NAMESPACE01 secret generic transactionqueryservicesecret --from-literal=username=$TOKEN_USERNAME --from-literal=password=$TOKEN_PASSWORD
 
 # Create secret for file share - needs to be part of the 'icap-administration' namespace
-kubectl create -n $NAMESPACE04 secret generic transactionstoresecret --from-literal=azurestorageaccountname=$FILESHARE_ACCOUNT_NAME --from-literal=azurestorageaccountkey=$FILESHARE_KEY --from-literal=TransactionStoreConnectionStringCsv=$TRANSACTION_CSV
+kubectl create -n $NAMESPACE04 secret generic transactionstoresecret --from-literal=accountName=$FILESHARE_ACCOUNT_NAME --from-literal=accountKey=$FILESHARE_KEY --from-literal=TransactionStoreConnectionStringCsv=$TRANSACTION_CSV
 
 kubectl create -n $NAMESPACE04 secret generic policyupdateserviceref --from-literal=username=$TOKEN_USERNAME --from-literal=password=$TOKEN_PASSWORD 
+
+kubectl create -n $NAMESPACE04 secret generic userstoresecret --from-literal=azurestorageaccountname=$FILESHARE_ACCOUNT_NAME --from-literal=azurestorageaccountkey=$FILESHARE_KEY
 
 kubectl create -n $NAMESPACE04 secret generic policystoresecret --from-literal=azurestorageaccountname=$FILESHARE_ACCOUNT_NAME --from-literal=azurestorageaccountkey=$FILESHARE_KEY
 
