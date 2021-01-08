@@ -15,6 +15,7 @@ FILESHARE_ACCOUNT_NAME=$(az storage account list -g $RESOURECE_GROUP --query "[]
 FILESHARE_KEY=$(az storage account keys list -g $RESOURECE_GROUP -n $FILESHARE_ACCOUNT_NAME --query "[].value" | awk 'FNR == 2' | tr -d '",\040')
 TOKEN_USERNAME=$(az keyvault secret show --name token-username --vault-name $VAULT_NAME --query value -o tsv)
 TOKEN_PASSWORD=$(az keyvault secret show --name token-password --vault-name $VAULT_NAME --query value -o tsv)
+TOKEN_SECRET=$(az keyvault secret show --name token-secret --vault-name $VAULT_NAME --query value -o tsv)
 TRANSACTION_CSV=$(az storage account show-connection-string -g $RESOURECE_GROUP -n $FILESHARE_ACCOUNT_NAME --query connectionString | tr -d '"')
 
 # Namspace Variables
@@ -38,6 +39,13 @@ kubectl create -n $NAMESPACE01 secret docker-registry regcred \
 	--docker-password="$DOCKER_PASSWORD" \
 	--docker-email=$USER_EMAIL
 
+# Create secret for Docker Registry - this only needs to be added to the 'icap-adaptation' and 'icap-administration' namespaces
+kubectl create -n $NAMESPACE04 secret docker-registry containerregistry \
+	--docker-server=$DOCKER_SERVER \
+	--docker-username=$DOCKER_USERNAME \
+	--docker-password="$DOCKER_PASSWORD" \
+	--docker-email=$USER_EMAIL
+
 # Create secrets for the 'icap-adaptation' namespace
 kubectl create -n $NAMESPACE01 secret generic policyupdateservicesecret --from-literal=username=$TOKEN_USERNAME --from-literal=password=$TOKEN_PASSWORD
 
@@ -53,6 +61,8 @@ kubectl create -n $NAMESPACE04 secret generic transactionstoresecret --from-lite
 kubectl create -n $NAMESPACE04 secret generic policyupdateserviceref --from-literal=username=$TOKEN_USERNAME --from-literal=password=$TOKEN_PASSWORD 
 
 kubectl create -n $NAMESPACE04 secret generic userstoresecret --from-literal=azurestorageaccountname=$FILESHARE_ACCOUNT_NAME --from-literal=azurestorageaccountkey=$FILESHARE_KEY
+
+kubectl create -n $NAMESPACE04 secret generic identitymanagementservicesecrets --from-literal=TokenSecret=$TOKEN_SECRET
 
 kubectl create -n $NAMESPACE04 secret generic policystoresecret --from-literal=azurestorageaccountname=$FILESHARE_ACCOUNT_NAME --from-literal=azurestorageaccountkey=$FILESHARE_KEY
 
