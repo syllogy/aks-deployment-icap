@@ -17,8 +17,8 @@ SECRET_NAME05="token-secret"
 DOCKER_USERNAME=$(az keyvault secret show --name DH-SA-USERNAME --vault-name gw-tfstate-Vault --query value -o tsv)
 DOCKER_PASSWORD=$(az keyvault secret show --name DH-SA-PASSWORD --vault-name gw-tfstate-Vault --query value -o tsv)
 TOKEN_USERNAME=$(az keyvault secret show --name token-username --vault-name gw-tfstate-Vault --query value -o tsv)
-TOKEN_PASSWORD=$(tr -dc 'A-Za-z0-9!"#$%&'\''()*+,-./:;<=>?@[\]^_`{|}~' </dev/urandom | head -c 20  ; echo)
-TOKEN_SECRET=$(tr -dc 'A-Za-z0-9!"#$%&'\''()*+,-./:;<=>?@[\]^_`{|}~' </dev/urandom | head -c 30  ; echo)
+TOKEN_PASSWORD=$(tr -dc 'A-Za-z0-9!' </dev/urandom | head -c 20  ; echo)
+TOKEN_SECRET=$(tr -dc 'A-Za-z0-9!' </dev/urandom | head -c 30  ; echo)
 
 # AZ Command to set Secrets
 az keyvault secret set --vault-name $NEU_VAULT --name $SECRET_NAME01 --value $DOCKER_USERNAME

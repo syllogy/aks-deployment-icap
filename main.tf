@@ -1,3 +1,13 @@
+# Backend Storage for Statefile
+terraform {
+  backend "azurerm" {
+	resource_group_name  = "gw-icap-tfstate"
+    storage_account_name = "tfstate263"
+    container_name       = "gw-icap-tfstate"
+    key                  = "terraform.tfstate"
+  }
+}
+
 # Cluster Modules
 module "create_aks_cluster_UKSouth" {
 	source						="./modules/clusters/aks01-uks"
