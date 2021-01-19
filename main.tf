@@ -29,6 +29,10 @@ module "create_aks_cluster_ARGOCD" {
 	source						="./modules/clusters/argocd-command-cluster"
 }
 
+module "create_aks_cluster_dinis_new" {
+	source						="./modules/clusters/aks05-new"
+}
+
 # Storage Account Modules
 module "create_storage_account_NEU" {
 	source						="./modules/storage-accounts/storage-account-neu"
@@ -44,6 +48,10 @@ module "create_storage_account_UKS" {
 
 module "create_storage_account_USEAST" {
 	source						="./modules/storage-accounts/storage-account-useast"
+}
+
+module "create_storage_account_dinis_new" {
+	source						="./modules/storage-accounts/storage-account-dinis"
 }
 
 # Key Vault Modules
@@ -62,5 +70,9 @@ module "create_key_vault_UKS" {
 
 module "create_key_vault_useast" {
 	source						="./modules/keyvaults/key-vault-useast"
+}
+
+module "create_key_vault_dinis_new" {
+	source						="./modules/keyvaults/key-vault-dinis"
 }
 

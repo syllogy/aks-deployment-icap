@@ -1,7 +1,7 @@
 variable "resource_group" {
   description = "This is a consolidated name based on org, environment, region"
   type        = string
-  default 	  = "gw-icap-aks-uks-develop"
+  default 	  = "gw-icap-aks-dinis-new"
 }
 
 variable "region" {
@@ -25,7 +25,7 @@ variable "secret_sp_2" {
 variable "cluster_name" {
   description = "This is a consolidated name based on org, environment, region"
   type        = string
-  default     = "gw-icap-uks-develop"
+  default     = "gw-icap-uks-dinis-new-01"
 }
 
 variable "keyvault_name" {

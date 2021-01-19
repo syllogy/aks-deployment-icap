@@ -5,6 +5,7 @@ NEU_VAULT="icap-neu-keyvault"
 UKS_VAULT="icap-uks-keyvault"
 QA_VAULT="icap-qa-uks-keyvault"
 USEAST_VAULT="icap-qa-useast-keyvault"
+UKS_DINIS_NEW_VAULT="icap-dinis-keyvault"
 
 # Secret Name Variables
 SECRET_NAME01="DH-SA-USERNAME"
@@ -63,3 +64,14 @@ az keyvault secret set --vault-name $USEAST_VAULT --name $SECRET_NAME03 --value 
 az keyvault secret set --vault-name $USEAST_VAULT --name $SECRET_NAME04 --value $TOKEN_PASSWORD
 
 az keyvault secret set --vault-name $USEAST_VAULT --name $SECRET_NAME05 --value $TOKEN_SECRET
+
+# AZ Command to set Secrets
+az keyvault secret set --vault-name $UKS_DINIS_NEW_VAULT --name $SECRET_NAME01 --value $DOCKER_USERNAME
+
+az keyvault secret set --vault-name $UKS_DINIS_NEW_VAULT --name $SECRET_NAME02 --value $DOCKER_PASSWORD
+
+az keyvault secret set --vault-name $UKS_DINIS_NEW_VAULT --name $SECRET_NAME03 --value $TOKEN_USERNAME
+
+az keyvault secret set --vault-name $UKS_DINIS_NEW_VAULT --name $SECRET_NAME04 --value $TOKEN_PASSWORD
+
+az keyvault secret set --vault-name $UKS_DINIS_NEW_VAULT --name $SECRET_NAME05 --value $TOKEN_SECRET
