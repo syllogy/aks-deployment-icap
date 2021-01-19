@@ -17,6 +17,7 @@ TOKEN_USERNAME=$(az keyvault secret show --name token-username --vault-name $VAU
 TOKEN_PASSWORD=$(az keyvault secret show --name token-password --vault-name $VAULT_NAME --query value -o tsv)
 TOKEN_SECRET=$(az keyvault secret show --name token-secret --vault-name $VAULT_NAME --query value -o tsv)
 TRANSACTION_CSV=$(az storage account show-connection-string -g $RESOURECE_GROUP -n $FILESHARE_ACCOUNT_NAME --query connectionString | tr -d '"')
+ENCRYPTION_SECRET=$(az keyvault secret show --name encryption-secret --vault-name $VAULT_NAME --query value -o tsv)
 
 # Namspace Variables
 NAMESPACE01="icap-adaptation"
@@ -59,7 +60,7 @@ kubectl create -n $NAMESPACE01 secret generic transactionqueryservicesecret --fr
 
 kubectl create -n $NAMESPACE04 secret generic policyupdateserviceref --from-literal=username=$TOKEN_USERNAME --from-literal=password=$TOKEN_PASSWORD 
 
-kubectl create -n $NAMESPACE04 secret generic userstoresecret --from-literal=azurestorageaccountname=$FILESHARE_ACCOUNT_NAME --from-literal=azurestorageaccountkey=$FILESHARE_KEY
+kubectl create -n $NAMESPACE04 secret generic userstoresecret --from-literal=azurestorageaccountname=$FILESHARE_ACCOUNT_NAME --from-literal=azurestorageaccountkey=$FILESHARE_KEY --from-literal=EncryptionSecret=$ENCRYPTION_SECRET
 
 kubectl create -n $NAMESPACE04 secret generic identitymanagementservicesecrets --from-literal=TokenSecret=$TOKEN_SECRET
 
