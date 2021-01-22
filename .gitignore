@@ -7,3 +7,4 @@ terraform.tfvars.old
 terafform.tfvars.old
 modules/aks/variables.tf
 terraform.tfstate.*.backup
+cert/*

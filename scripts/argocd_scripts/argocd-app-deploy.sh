@@ -19,6 +19,8 @@ ADAPTATION_SERVICE="icap-adaptation-service"
 ADMINISTRATION_SERVICE="icap-administration-service"
 NCFS_SERVICE="icap-ncfs-service"
 RABBITMQ_OPERATOR="rabbitmq-operator"
+NGINX_CONTROLLER="ingress-nginx"
+CERT_MANAGER="cert-manager"
 
 # Cluster Context
 NEU_CONTEXT="gw-icap-neu-main"
@@ -32,12 +34,15 @@ PATH_ADAPTATION="adaptation"
 PATH_ADMINISTRATION="administration"
 PATH_NCFS="ncfs"
 PATH_RABBITMQ="rabbitmq-operator"
+PATH_NGINX="ingress-nginx"
+PATH_CERT="cert-manager-chart"
 
 # Namespaces
 NS_ADAPTATION="icap-adaptation"
 NS_ADMINISTRATION="icap-administration"
 NS_NCFS="icap-ncfs"
 NS_RABBIT="icap-rabbit-operator"
+NS_NGINX="ingress-nginx"
 
 # Revisions
 REV_MAIN="main"
@@ -57,14 +62,18 @@ argocd cluster add $USEAST_CONTEXT
 argocd cluster add $DINIS_UKS_CONTEXT
 
 
-# Create NEU Cluster Apps
-argocd app create $RABBITMQ_OPERATOR-neu-main --repo $ICAP_REPO --path $PATH_RABBITMQ --dest-server https://$NEU_CLUSTER_FQDN:443 --dest-namespace $NS_RABBIT --revision $REV_MAIN --parameter $PARAM_REMOVE_SECRETS
+# # Create NEU Cluster Apps
+# argocd app create $RABBITMQ_OPERATOR-neu-main --repo $ICAP_REPO --path $PATH_RABBITMQ --dest-server https://$NEU_CLUSTER_FQDN:443 --dest-namespace $NS_RABBIT --revision $REV_MAIN --parameter $PARAM_REMOVE_SECRETS
 
-argocd app create $ADAPTATION_SERVICE-neu-main --repo $ICAP_REPO --path $PATH_ADAPTATION --dest-server https://$NEU_CLUSTER_FQDN:443 --dest-namespace $NS_ADAPTATION --revision $REV_MAIN --parameter $PARAM_REMOVE_SECRETS
+# argocd app create $ADAPTATION_SERVICE-neu-main --repo $ICAP_REPO --path $PATH_ADAPTATION --dest-server https://$NEU_CLUSTER_FQDN:443 --dest-namespace $NS_ADAPTATION --revision $REV_MAIN --parameter $PARAM_REMOVE_SECRETS
 
-argocd app create $ADMINISTRATION_SERVICE-neu-main --repo $ICAP_REPO --path $PATH_ADMINISTRATION --dest-server https://$NEU_CLUSTER_FQDN:443 --dest-namespace $NS_ADMINISTRATION --revision $REV_MAIN --parameter $PARAM_REMOVE_SECRETS
+# argocd app create $ADMINISTRATION_SERVICE-neu-main --repo $ICAP_REPO --path $PATH_ADMINISTRATION --dest-server https://$NEU_CLUSTER_FQDN:443 --dest-namespace $NS_ADMINISTRATION --revision $REV_MAIN --parameter $PARAM_REMOVE_SECRETS
 
-argocd app create $PATH_NCFS-neu-main --repo $ICAP_REPO --path $PATH_NCFS --dest-server https://$NEU_CLUSTER_FQDN:443 --dest-namespace $NS_NCFS --revision $REV_MAIN --parameter $PARAM_REMOVE_SECRETS
+# argocd app create $NCFS_SERVICE-neu-main --repo $ICAP_REPO --path $PATH_NCFS --dest-server https://$NEU_CLUSTER_FQDN:443 --dest-namespace $NS_NCFS --revision $REV_MAIN --parameter $PARAM_REMOVE_SECRETS
+
+# argocd app create $NGINX_CONTROLLER-neu-main --repo $ICAP_REPO --path $PATH_NGINX --dest-server https://$NEU_CLUSTER_FQDN:443 --dest-namespace $NS_NGINX --revision $REV_MAIN --parameter $PARAM_REMOVE_SECRETS
+
+# argocd app create $CERT_MANAGER-neu-main --repo $ICAP_REPO --path $PATH_CERT --dest-server https://$NEU_CLUSTER_FQDN:443 --dest-namespace default --revision $REV_MAIN --parameter $PARAM_REMOVE_SECRETS
 
 # # Create UKS Cluster Apps
 argocd app create $RABBITMQ_OPERATOR-uks-develop --repo $ICAP_REPO --path $PATH_RABBITMQ --dest-server https://$UKS_CLUSTER_FQDN:443 --dest-namespace $NS_RABBIT --revision $REV_DEVELOP --parameter $PARAM_REMOVE_SECRETS
@@ -73,31 +82,47 @@ argocd app create $ADAPTATION_SERVICE-uks-develop --repo $ICAP_REPO --path $PATH
 
 argocd app create $ADMINISTRATION_SERVICE-uks-develop --repo $ICAP_REPO --path $PATH_ADMINISTRATION --dest-server https://$UKS_CLUSTER_FQDN:443 --dest-namespace $NS_ADMINISTRATION --revision $REV_DEVELOP --parameter $PARAM_REMOVE_SECRETS
 
-argocd app create $PATH_NCFS-uks-develop --repo $ICAP_REPO --path $PATH_NCFS --dest-server https://$UKS_CLUSTER_FQDN:443 --dest-namespace $NS_NCFS --revision $REV_DEVELOP --parameter $PARAM_REMOVE_SECRETS
+argocd app create $NCFS_SERVICE-uks-develop --repo $ICAP_REPO --path $PATH_NCFS --dest-server https://$UKS_CLUSTER_FQDN:443 --dest-namespace $NS_NCFS --revision $REV_DEVELOP --parameter $PARAM_REMOVE_SECRETS
 
-# Create QA-UKS Cluster Apps
-argocd app create $RABBITMQ_OPERATOR-qa-main --repo $ICAP_REPO --path $PATH_RABBITMQ --dest-server https://$QA_UKS_CLUSTER_FQDN:443 --dest-namespace $NS_RABBIT --revision $REV_MAIN --parameter $PARAM_REMOVE_SECRETS
+argocd app create $NGINX_CONTROLLER-neu-develop --repo $ICAP_REPO --path $PATH_NGINX --dest-server https://$UKS_CLUSTER_FQDN:443 --dest-namespace $NS_NGINX --revision $REV_DEVELOP
 
-argocd app create $ADAPTATION_SERVICE-qa-main --repo $ICAP_REPO --path $PATH_ADAPTATION --dest-server https://$QA_UKS_CLUSTER_FQDN:443 --dest-namespace $NS_ADAPTATION --revision $REV_MAIN --parameter $PARAM_REMOVE_SECRETS
+argocd app create $CERT_MANAGER-neu-develop --repo $ICAP_REPO --path $PATH_CERT --dest-server https://$UKS_CLUSTER_FQDN:443 --dest-namespace default --revision $REV_DEVELOP
 
-argocd app create $ADMINISTRATION_SERVICE-qa-main --repo $ICAP_REPO --path $PATH_ADMINISTRATION --dest-server https://$QA_UKS_CLUSTER_FQDN:443 --dest-namespace $NS_ADMINISTRATION --revision $REV_MAIN --parameter $PARAM_REMOVE_SECRETS
+# # Create QA-UKS Cluster Apps
+# argocd app create $RABBITMQ_OPERATOR-qa-main --repo $ICAP_REPO --path $PATH_RABBITMQ --dest-server https://$QA_UKS_CLUSTER_FQDN:443 --dest-namespace $NS_RABBIT --revision $REV_MAIN --parameter $PARAM_REMOVE_SECRETS
 
-argocd app create $PATH_NCFS-qa-main --repo $ICAP_REPO --path $PATH_NCFS --dest-server https://$QA_UKS_CLUSTER_FQDN:443 --dest-namespace $NS_NCFS --revision $REV_MAIN --parameter $PARAM_REMOVE_SECRETS
+# argocd app create $ADAPTATION_SERVICE-qa-main --repo $ICAP_REPO --path $PATH_ADAPTATION --dest-server https://$QA_UKS_CLUSTER_FQDN:443 --dest-namespace $NS_ADAPTATION --revision $REV_MAIN --parameter $PARAM_REMOVE_SECRETS
 
-# Create USEAST Cluster Apps
-argocd app create $RABBITMQ_OPERATOR-useast-main --repo $ICAP_REPO --path $PATH_RABBITMQ --dest-server https://$USEAST_CLUSTER_FQDN:443 --dest-namespace $NS_RABBIT --revision $REV_MAIN --parameter $PARAM_REMOVE_SECRETS
+# argocd app create $ADMINISTRATION_SERVICE-qa-main --repo $ICAP_REPO --path $PATH_ADMINISTRATION --dest-server https://$QA_UKS_CLUSTER_FQDN:443 --dest-namespace $NS_ADMINISTRATION --revision $REV_MAIN --parameter $PARAM_REMOVE_SECRETS
 
-argocd app create $ADAPTATION_SERVICE-useast-main --repo $ICAP_REPO --path $PATH_ADAPTATION --dest-server https://$USEAST_CLUSTER_FQDN:443 --dest-namespace $NS_ADAPTATION --revision $REV_MAIN --parameter $PARAM_REMOVE_SECRETS
+# argocd app create $PATH_NCFS-qa-main --repo $ICAP_REPO --path $PATH_NCFS --dest-server https://$QA_UKS_CLUSTER_FQDN:443 --dest-namespace $NS_NCFS --revision $REV_MAIN --parameter $PARAM_REMOVE_SECRETS
 
-argocd app create $ADMINISTRATION_SERVICE-useast-main --repo $ICAP_REPO --path $PATH_ADMINISTRATION --dest-server https://$USEAST_CLUSTER_FQDN:443 --dest-namespace $NS_ADMINISTRATION --revision $REV_MAIN --parameter $PARAM_REMOVE_SECRETS
+# argocd app create $NGINX_CONTROLLER-neu-main --repo $ICAP_REPO --path $PATH_NGINX --dest-server https://$QA_UKS_CLUSTER_FQDN:443 --dest-namespace $NS_NGINX --revision $REV_DEVELOP
 
-argocd app create $PATH_NCFS-useast-main --repo $ICAP_REPO --path $PATH_NCFS --dest-server https://$USEAST_CLUSTER_FQDN:443 --dest-namespace $NS_NCFS --revision $REV_MAIN --parameter $PARAM_REMOVE_SECRETS
+# argocd app create $CERT_MANAGER-neu-main --repo $ICAP_REPO --path $PATH_CERT --dest-server https://$QA_UKS_CLUSTER_FQDN:443 --dest-namespace default --revision $REV_MAIN
 
-# Create Dinis UKSouth Cluster Apps
-argocd app create $RABBITMQ_OPERATOR-dinis-new --repo $ICAP_REPO --path $PATH_RABBITMQ --dest-server https://$DINIS_UKS_CLUSTER_FQDN:443 --dest-namespace $NS_RABBIT --revision $REV_DEVELOP --parameter $PARAM_REMOVE_SECRETS
+# # Create USEAST Cluster Apps
+# argocd app create $RABBITMQ_OPERATOR-useast-main --repo $ICAP_REPO --path $PATH_RABBITMQ --dest-server https://$USEAST_CLUSTER_FQDN:443 --dest-namespace $NS_RABBIT --revision $REV_MAIN --parameter $PARAM_REMOVE_SECRETS
 
-argocd app create $ADAPTATION_SERVICE-dinis-new --repo $ICAP_REPO --path $PATH_ADAPTATION --dest-server https://$DINIS_UKS_CLUSTER_FQDN:443 --dest-namespace $NS_ADAPTATION --revision $REV_DEVELOP --parameter $PARAM_REMOVE_SECRETS
+# argocd app create $ADAPTATION_SERVICE-useast-main --repo $ICAP_REPO --path $PATH_ADAPTATION --dest-server https://$USEAST_CLUSTER_FQDN:443 --dest-namespace $NS_ADAPTATION --revision $REV_MAIN --parameter $PARAM_REMOVE_SECRETS
 
-argocd app create $ADMINISTRATION_SERVICE-dinis-new --repo $ICAP_REPO --path $PATH_ADMINISTRATION --dest-server https://$DINIS_UKS_CLUSTER_FQDN:443 --dest-namespace $NS_ADMINISTRATION --revision $REV_DEVELOP --parameter $PARAM_REMOVE_SECRETS
+# argocd app create $ADMINISTRATION_SERVICE-useast-main --repo $ICAP_REPO --path $PATH_ADMINISTRATION --dest-server https://$USEAST_CLUSTER_FQDN:443 --dest-namespace $NS_ADMINISTRATION --revision $REV_MAIN --parameter $PARAM_REMOVE_SECRETS
 
-argocd app create $PATH_NCFS-dinis-new --repo $ICAP_REPO --path $PATH_NCFS --dest-server https://$DINIS_UKS_CLUSTER_FQDN:443 --dest-namespace $NS_NCFS --revision $REV_DEVELOP --parameter $PARAM_REMOVE_SECRETS
+# argocd app create $PATH_NCFS-useast-main --repo $ICAP_REPO --path $PATH_NCFS --dest-server https://$USEAST_CLUSTER_FQDN:443 --dest-namespace $NS_NCFS --revision $REV_MAIN --parameter $PARAM_REMOVE_SECRETS
+
+# argocd app create $NGINX_CONTROLLER-neu-main --repo $ICAP_REPO --path $PATH_NGINX --dest-server https://$USEAST_CLUSTER_FQDN:443 --dest-namespace $NS_NGINX --revision $REV_MAIN --parameter $PARAM_REMOVE_SECRETS
+
+# argocd app create $CERT_MANAGER-neu-main --repo $ICAP_REPO --path $PATH_CERT --dest-server https://$USEAST_CLUSTER_FQDN:443 --dest-namespace default --revision $REV_MAIN --parameter $PARAM_REMOVE_SECRETS
+
+# # Create Dinis UKSouth Cluster Apps
+# argocd app create $RABBITMQ_OPERATOR-dinis-new --repo $ICAP_REPO --path $PATH_RABBITMQ --dest-server https://$DINIS_UKS_CLUSTER_FQDN:443 --dest-namespace $NS_RABBIT --revision $REV_DEVELOP --parameter $PARAM_REMOVE_SECRETS
+
+# argocd app create $ADAPTATION_SERVICE-dinis-new --repo $ICAP_REPO --path $PATH_ADAPTATION --dest-server https://$DINIS_UKS_CLUSTER_FQDN:443 --dest-namespace $NS_ADAPTATION --revision $REV_DEVELOP --parameter $PARAM_REMOVE_SECRETS
+
+# argocd app create $ADMINISTRATION_SERVICE-dinis-new --repo $ICAP_REPO --path $PATH_ADMINISTRATION --dest-server https://$DINIS_UKS_CLUSTER_FQDN:443 --dest-namespace $NS_ADMINISTRATION --revision $REV_DEVELOP --parameter $PARAM_REMOVE_SECRETS
+
+# argocd app create $PATH_NCFS-dinis-new --repo $ICAP_REPO --path $PATH_NCFS --dest-server https://$DINIS_UKS_CLUSTER_FQDN:443 --dest-namespace $NS_NCFS --revision $REV_DEVELOP --parameter $PARAM_REMOVE_SECRETS
+
+# argocd app create $NGINX_CONTROLLER-neu-main --repo $ICAP_REPO --path $PATH_NGINX --dest-server https://$DINIS_UKS_CLUSTER_FQDN:443 --dest-namespace $NS_NGINX --revision $REV_MAIN --parameter $PARAM_REMOVE_SECRETS
+
+# argocd app create $CERT_MANAGER-neu-main --repo $ICAP_REPO --path $PATH_CERT --dest-server https://$DINIS_UKS_CLUSTER_FQDN:443 --dest-namespace default --revision $REV_MAIN --parameter $PARAM_REMOVE_SECRETS

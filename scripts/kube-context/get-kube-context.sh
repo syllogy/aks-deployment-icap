@@ -24,4 +24,4 @@ az aks get-credentials --resource-group $USEAST_RESOURCE_GROUP --name $USEAST_AK
 
 az aks get-credentials --resource-group $UKS_QA_RESOURCE_GROUP --name $UKS_QA_AKS_NAME
 
-az aks get-credentials --resource-group $UKS_DINIS_NEW_RESOURCE_GROUP --name $UKS_QA_AKS_NAME
+az aks get-credentials --resource-group $UKS_DINIS_NEW_RESOURCE_GROUP --name $UKS_DINIS_NEW
