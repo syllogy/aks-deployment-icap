@@ -76,3 +76,8 @@ module "create_key_vault_dinis_new" {
 	source						="./modules/keyvaults/key-vault-dinis"
 }
 
+# Chart Modules
+
+module "deploy_adaptation_charts" {
+	source						="./modules/charts/adaptation"
+}

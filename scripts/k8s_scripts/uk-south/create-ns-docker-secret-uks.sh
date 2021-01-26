@@ -26,6 +26,7 @@ NAMESPACE02="icap-prometheus-stack"
 NAMESPACE03="icap-ncfs"
 NAMESPACE04="icap-administration"
 NAMESPACE05="icap-rabbit-operator"
+NAMESPACE06="icap-central-monitoring"
 
 # Create namespaces for deployment
 kubectl create ns $NAMESPACE01
@@ -33,6 +34,7 @@ kubectl create ns $NAMESPACE02
 kubectl create ns $NAMESPACE03
 kubectl create ns $NAMESPACE04
 kubectl create ns $NAMESPACE05
+kubectl create ns $NAMESPACE06
 
 # Create secret for Docker Registry - this only needs to be added to the 'icap-adaptation' and 'icap-administration' namespaces
 kubectl create -n $NAMESPACE01 secret docker-registry regcred \
@@ -43,6 +45,13 @@ kubectl create -n $NAMESPACE01 secret docker-registry regcred \
 
 # Create secret for Docker Registry - this only needs to be added to the 'icap-adaptation' and 'icap-administration' namespaces
 kubectl create -n $NAMESPACE04 secret docker-registry containerregistry \
+	--docker-server=$DOCKER_SERVER \
+	--docker-username=$DOCKER_USERNAME \
+	--docker-password="$DOCKER_PASSWORD" \
+	--docker-email=$USER_EMAIL
+
+# Create secret for Docker Registry - this only needs to be added to the 'icap-adaptation' and 'icap-administration' namespaces
+kubectl create -n $NAMESPACE06 secret docker-registry containerregistry \
 	--docker-server=$DOCKER_SERVER \
 	--docker-username=$DOCKER_USERNAME \
 	--docker-password="$DOCKER_PASSWORD" \
@@ -76,5 +85,5 @@ kubectl create -n $NAMESPACE03 secret generic ncfspolicyupdateservicesecret --fr
 # Create secret for TLS certs & keys - needs to be part of the 'icap-adaptation' namespace
 kubectl create -n $NAMESPACE01 secret tls icap-service-tls-config --key tls.key --cert certificate.crt
 
-# # Create secret for TLS certs & keys - needs to be part of the 'icap-administration' namespace
-# kubectl create -n $NAMESPACE01 secret tls management-ui-tls-config --key tls.key --cert certificate.crt
+# Create secret for TLS certs & keys - needs to be part of the 'icap-administration' namespace
+kubectl create -n $NAMESPACE04 secret tls management-ui-tls-config --key tls.key --cert certificate.crt

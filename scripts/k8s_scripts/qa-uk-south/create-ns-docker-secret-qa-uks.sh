@@ -25,6 +25,7 @@ NAMESPACE02="icap-prometheus-stack"
 NAMESPACE03="icap-ncfs"
 NAMESPACE04="icap-administration"
 NAMESPACE05="icap-rabbit-operator"
+NAMESPACE06="icap-central-monitoring"
 
 # Create namespaces for deployment
 kubectl create ns $NAMESPACE01
@@ -32,6 +33,7 @@ kubectl create ns $NAMESPACE02
 kubectl create ns $NAMESPACE03
 kubectl create ns $NAMESPACE04
 kubectl create ns $NAMESPACE05
+kubectl create ns $NAMESPACE06
 
 # Create secret for Docker Registry - this only needs to be added to the 'icap-adaptation' and 'icap-administration' namespaces
 kubectl create -n $NAMESPACE01 secret docker-registry regcred \
@@ -59,9 +61,9 @@ kubectl create -n $NAMESPACE01 secret generic transactionqueryservicesecret --fr
 # Create secret for file share - needs to be part of the 'icap-administration' namespace
 kubectl create -n $NAMESPACE04 secret generic policyupdateserviceref --from-literal=username=$TOKEN_USERNAME --from-literal=password=$TOKEN_PASSWORD 
 
-kubectl create -n $NAMESPACE04 secret generic userstoresecret --from-literal=azurestorageaccountname=$FILESHARE_ACCOUNT_NAME --from-literal=azurestorageaccountkey=$FILESHARE_KEY
+kubectl create -n $NAMESPACE04 secret generic userstoresecret --from-literal=azurestorageaccountname=$FILESHARE_ACCOUNT_NAME --from-literal=azurestorageaccountkey=$FILESHARE_KEY --from-literal=EncryptionSecret=$ENCRYPTION_SECRET
 
-kubectl create -n $NAMESPACE04 secret generic identitymanagementservicesecrets --from-literal=TokenSecret=$TOKEN_SECRET
+kubectl create -n $NAMESPACE04 secret generic identitymanagementservicesecrets --from-literal=TokenSecret="$TOKEN_SECRET" --from-literal=ManagementUIEndpoint=$MANAGEMENT_ENDPOINT
 
 kubectl create -n $NAMESPACE04 secret generic policystoresecret --from-literal=azurestorageaccountname=$FILESHARE_ACCOUNT_NAME --from-literal=azurestorageaccountkey=$FILESHARE_KEY
 
@@ -74,3 +76,6 @@ kubectl create -n $NAMESPACE03 secret generic ncfspolicyupdateservicesecret --fr
 
 # Create secret for TLS certs & keys - needs to be part of the 'icap-adaptation' namespace
 kubectl create -n $NAMESPACE01 secret tls icap-service-tls-config --key tls.key --cert certificate.crt
+
+# Create secret for TLS certs & keys - needs to be part of the 'icap-administration' namespace
+kubectl create -n $NAMESPACE04 secret tls management-ui-tls-config --key tls.key --cert certificate.crt
