@@ -18,6 +18,11 @@ TOKEN_PASSWORD=$(az keyvault secret show --name token-password --vault-name $VAU
 TOKEN_SECRET=$(az keyvault secret show --name token-secret --vault-name $VAULT_NAME --query value -o tsv)
 TRANSACTION_CSV=$(az storage account show-connection-string -g $RESOURECE_GROUP -n $FILESHARE_ACCOUNT_NAME --query connectionString | tr -d '"')
 ENCRYPTION_SECRET=$(az keyvault secret show --name encryption-secret --vault-name $VAULT_NAME --query value -o tsv)
+SMTPHOST=$(az keyvault secret show --name SmtpHost --vault-name $VAULT_NAME --query value -o tsv)
+SMTPPORT=$(az keyvault secret show --name SmtpPort --vault-name $VAULT_NAME --query value -o tsv)
+SMTPUSER=$(az keyvault secret show --name SmtpUser --vault-name $VAULT_NAME --query value -o tsv)
+SMTPPASS=$(az keyvault secret show --name SmtpPass --vault-name $VAULT_NAME --query value -o tsv)
+SMTPSECURESOCKETOPTIONS=$(az keyvault secret show --name SmtpSecureSocketOptions --vault-name $VAULT_NAME --query value -o tsv)
 
 # Namspace Variables
 NAMESPACE01="icap-adaptation"
@@ -77,6 +82,13 @@ kubectl create -n $NAMESPACE04 secret generic policystoresecret --from-literal=a
 kubectl create -n $NAMESPACE04 secret generic transactionqueryserviceref --from-literal=username=$TOKEN_USERNAME --from-literal=password=$TOKEN_PASSWORD
 
 kubectl create -n $NAMESPACE04 secret generic ncfspolicyupdateserviceref --from-literal=username=$TOKEN_USERNAME --from-literal=password=$TOKEN_PASSWORD
+
+kubectl create -n $NAMESPACE04 secret generic smtpsecret \
+	--from-literal=SmtpHost=$SMTPHOST \
+	--from-literal=SmtpPort=$SMTPPORT \
+	--from-literal=SmtpUser=$SMTPUSER \
+	--from-literal=SmtpPass=$SMTPPASS \
+	--from-literal=SmtpSecureSocketOptions=$SMTPSECURESOCKETOPTIONS
 
 # Create secret for file share - needs to be part of the 'icap-ncfs' namespace
 kubectl create -n $NAMESPACE03 secret generic ncfspolicyupdateservicesecret --from-literal=username=$TOKEN_USERNAME --from-literal=password=$TOKEN_PASSWORD
