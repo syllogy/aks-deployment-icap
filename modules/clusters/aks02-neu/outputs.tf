@@ -13,7 +13,3 @@ output "secret_value_1" {
 output "secret_value_2" {
   value = data.azurerm_key_vault_secret.sppassword.value
 }
-
-output "aks_sg_name" {
-  value = data.external.aks_sg_name.result.output
-}

@@ -18,7 +18,7 @@ TOKEN_PASSWORD=$(az keyvault secret show --name token-password --vault-name $VAU
 TOKEN_SECRET=$(az keyvault secret show --name token-secret --vault-name $VAULT_NAME --query value -o tsv)
 TRANSACTION_CSV=$(az storage account show-connection-string -g $RESOURCE_GROUP -n $FILESHARE_ACCOUNT_NAME --query connectionString | tr -d '"')
 ENCRYPTION_SECRET=$(az keyvault secret show --name encryption-secret --vault-name $VAULT_NAME --query value -o tsv)
-MANAGEMENT_ENDPOINT=$(az keyvault secret show --name manage-endpoint --vault-name $VAULT_NAME --query value -o tsv)
+# MANAGEMENT_ENDPOINT=$(az keyvault secret show --name manage-endpoint --vault-name $VAULT_NAME --query value -o tsv) **GET RID**
 
 SMTPHOST=$(az keyvault secret show --name SmtpHost --vault-name $VAULT_NAME --query value -o tsv)
 SMTPPORT=$(az keyvault secret show --name SmtpPort --vault-name $VAULT_NAME --query value -o tsv)

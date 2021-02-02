@@ -78,6 +78,6 @@ module "create_key_vault_dinis_new" {
 
 # Chart Modules
 
-module "deploy_adaptation_charts" {
-	source						="./modules/charts/adaptation"
+module "deploy_charts_useast" {
+	source						="./modules/charts/aks03-useast/adaptation"
 }
