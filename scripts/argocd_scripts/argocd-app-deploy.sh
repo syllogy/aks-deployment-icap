@@ -9,8 +9,11 @@ QA_UKS_RESOURCE_GROUP="gw-icap-uks-qa-main"
 # Cluster FQDN Variables
 UKS_CLUSTER_FQDN=$(az aks list -g $UKS_RESOURCE_GROUP --query "[].fqdn" | awk 'FNR == 2' | tr -d '",\040')
 NEU_CLUSTER_FQDN=$(az aks list -g $NEU_RESOURCE_GROUP --query "[].fqdn" | awk 'FNR == 2' | tr -d '",\040')
+UKS_FILE_DROP_CLUSTER_FQDN=$(az aks list -g $UKS_RESOURCE_GROUP --query "[].fqdn" | awk 'FNR == 2' | tr -d '",\040')
+NEU_FILE_DROP_CLUSTER_FQDN=$(az aks list -g $NEU_RESOURCE_GROUP --query "[].fqdn" | awk 'FNR == 2' | tr -d '",\040')
 USEAST_CLUSTER_FQDN=$(az aks list -g $USEAST_RESOURCE_GROUP --query "[].fqdn" | awk 'FNR == 2' | tr -d '",\040')
 QA_UKS_CLUSTER_FQDN=$(az aks list -g $QA_UKS_RESOURCE_GROUP --query "[].fqdn" | awk 'FNR == 2' | tr -d '",\040')
+
 
 # App Name
 ADAPTATION_SERVICE="icap-adaptation-service"
@@ -25,6 +28,8 @@ ELK_STACK="elk-stack"
 # Cluster Context
 NEU_CONTEXT="gw-icap-neu-main"
 UKS_CONTEXT="gw-icap-uks-develop"
+NEU_FILE_DROP_CONTEXT="gw-icap-neu-file-drop-main"
+UKS_FILE_DROP_CONTEXT="gw-icap-uks-file-drop-develop"
 QA_UKS_CONTEXT="gw-icap-uks-qa-main"
 USEAST_CONTEXT="gw-icap-useast-main"
 
@@ -94,7 +99,7 @@ argocd app create $ADAPTATION_SERVICE-neu-main --repo $ICAP_REPO --path $PATH_AD
 
 argocd app create $ADMINISTRATION_SERVICE-neu-main --repo $ICAP_REPO --path $PATH_ADMINISTRATION --dest-server https://$NEU_CLUSTER_FQDN:443 --dest-namespace $NS_ADMINISTRATION --revision $REV_MAIN --parameter $PARAM_REMOVE_SECRETS --parameter $PARAM_NEU_MGMT_DNS_01 --parameter $PARAM_NEU_MGMT_DNS_02 --sync-policy automated --auto-prune
 
-argocd app create $FILE_DROP-neu-main --repo $ICAP_REPO --path $PATH_FILEDROP --dest-server https://$NEU_CLUSTER_FQDN:443 --dest-namespace $NS_FILEDROP --revision $REV_MAIN --parameter $PARAM_REMOVE_SECRETS --parameter $PARAM_NEU_FILEDROP_DNS --sync-policy automated --auto-prune
+argocd app create $FILE_DROP-neu-main --repo $ICAP_REPO --path $PATH_FILEDROP --dest-server https://$NEU_FILE_DROP_CLUSTER_FQDN:443 --dest-namespace $NS_FILEDROP --revision $REV_MAIN --parameter $PARAM_REMOVE_SECRETS --parameter $PARAM_NEU_FILEDROP_DNS --sync-policy automated --auto-prune
 
 argocd app create $ELK_STACK-neu-main --repo $ICAP_REPO --path $PATH_ELK_STACK --dest-server https://$NEU_CLUSTER_FQDN:443 --dest-namespace $NS_ELK_STACK --revision $REV_MAIN --parameter $PARAM_REMOVE_SECRETS --sync-policy automated --auto-prune
 
@@ -113,7 +118,7 @@ argocd app create $ADAPTATION_SERVICE-uks-develop --repo $ICAP_REPO --path $PATH
 
 argocd app create $ADMINISTRATION_SERVICE-uks-develop --repo $ICAP_REPO --path $PATH_ADMINISTRATION --dest-server https://$UKS_CLUSTER_FQDN:443 --dest-namespace $NS_ADMINISTRATION --revision $REV_DEVELOP --parameter $PARAM_REMOVE_SECRETS --parameter $PARAM_UKS_MGMT_DNS_01 --parameter $PARAM_UKS_MGMT_DNS_02 --sync-policy automated --auto-prune
 
-argocd app create $FILE_DROP-uks-develop --repo $ICAP_REPO --path $PATH_FILEDROP --dest-server https://$UKS_CLUSTER_FQDN:443 --dest-namespace $NS_FILEDROP --revision $REV_DEVELOP --parameter $PARAM_REMOVE_SECRETS --parameter $PARAM_UKS_FILEDROP_DNS --sync-policy automated --auto-prune
+argocd app create $FILE_DROP-uks-develop --repo $ICAP_REPO --path $PATH_FILEDROP --dest-server https://$UKS_FILE_DROP_CLUSTER_FQDN:443 --dest-namespace $NS_FILEDROP --revision $REV_DEVELOP --parameter $PARAM_REMOVE_SECRETS --parameter $PARAM_UKS_FILEDROP_DNS --sync-policy automated --auto-prune
 
 argocd app create $ELK_STACK-uks-develop --repo $ICAP_REPO --path $PATH_ELK_STACK --dest-server https://$UKS_CLUSTER_FQDN:443 --dest-namespace $NS_ELK_STACK --revision $REV_DEVELOP --parameter $PARAM_REMOVE_SECRETS --sync-policy automated --auto-prune
 
