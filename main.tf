@@ -13,8 +13,16 @@ module "create_aks_cluster_UKSouth" {
 	source						="./modules/clusters/aks01-uks"
 }
 
+module "create_aks_cluster_file_drop_UKSouth" {
+	source						="./modules/clusters/aks01-uks/file-drop-cluster"
+}
+
 module "create_aks_cluster_NorthEurope" {
 	source						="./modules/clusters/aks02-neu"
+}
+
+module "create_aks_cluster_file_drop_NorthEurope" {
+	source						="./modules/clusters/aks02-neu/file-drop-cluster"
 }
 
 module "create_aks_cluster_USEast" {
@@ -27,10 +35,6 @@ module "create_aks_cluster_QA-UKSouth" {
 
 module "create_aks_cluster_ARGOCD" {
 	source						="./modules/clusters/argocd-command-cluster"
-}
-
-module "create_aks_cluster_dinis_new" {
-	source						="./modules/clusters/aks05-new"
 }
 
 # Storage Account Modules
@@ -50,10 +54,6 @@ module "create_storage_account_USEAST" {
 	source						="./modules/storage-accounts/storage-account-useast"
 }
 
-module "create_storage_account_dinis_new" {
-	source						="./modules/storage-accounts/storage-account-dinis"
-}
-
 # Key Vault Modules
 
 module "create_key_vault_NEU" {
@@ -70,10 +70,6 @@ module "create_key_vault_UKS" {
 
 module "create_key_vault_useast" {
 	source						="./modules/keyvaults/key-vault-useast"
-}
-
-module "create_key_vault_dinis_new" {
-	source						="./modules/keyvaults/key-vault-dinis"
 }
 
 # Chart Modules
