@@ -71,9 +71,3 @@ module "create_key_vault_UKS" {
 module "create_key_vault_useast" {
 	source						="./modules/keyvaults/key-vault-useast"
 }
-
-# Chart Modules
-
-module "deploy_charts_useast" {
-	source						="./modules/charts/aks03-useast/adaptation"
-}

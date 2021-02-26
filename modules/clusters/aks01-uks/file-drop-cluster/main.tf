@@ -13,19 +13,10 @@ data "azurerm_key_vault_secret" "sppassword" {
   key_vault_id = data.azurerm_key_vault.keyvault.id
 }
 
-resource "azurerm_resource_group" "resource_group" {
-  name     = var.resource_group
-  location = var.region
-
-    tags = {
-    created_by = "Mattp" 
-  }
-}
-
 resource "azurerm_kubernetes_cluster" "icap-deploy" {
   name                = var.cluster_name
-  location            = azurerm_resource_group.resource_group.location
-  resource_group_name = azurerm_resource_group.resource_group.name
+  location            = var.region
+  resource_group_name = var.resource_group
   dns_prefix          = "${var.cluster_name}-k8s"
 
   default_node_pool {
