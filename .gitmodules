@@ -1,6 +1,3 @@
-[submodule "pod-creations/icap-infrastructure"]
-	path = pod-creations/icap-infrastructure
-	url = https://github.com/filetrust/icap-infrastructure
 [submodule "pod-creations/icap-management-ui"]
 	path = pod-creations/icap-management-ui
 	url = https://github.com/filetrust/icap-management-ui
