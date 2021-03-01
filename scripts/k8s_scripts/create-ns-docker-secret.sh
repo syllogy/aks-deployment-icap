@@ -3,8 +3,9 @@
 # This script will run create the neccesary namespaces and add the docker service account to the required namespace.
 
 # Naming Variables
-RESOURECE_GROUP="gw-icap-qa-uks-storage"
-VAULT_NAME="icap-qa-uks-keyvault"
+RESOURCE_GROUP=$1
+VAULT_NAME=$2
+CLUSTER_NAME=$3
 
 # Secret Variables
 DOCKER_SERVER="https://index.docker.io/v1/"
@@ -18,6 +19,7 @@ TOKEN_PASSWORD=$(az keyvault secret show --name token-password --vault-name $VAU
 TOKEN_SECRET=$(az keyvault secret show --name token-secret --vault-name $VAULT_NAME --query value -o tsv)
 TRANSACTION_CSV=$(az storage account show-connection-string -g $RESOURCE_GROUP -n $FILESHARE_ACCOUNT_NAME --query connectionString | tr -d '"')
 ENCRYPTION_SECRET=$(az keyvault secret show --name encryption-secret --vault-name $VAULT_NAME --query value -o tsv)
+
 SMTPHOST=$(az keyvault secret show --name SmtpHost --vault-name $VAULT_NAME --query value -o tsv)
 SMTPPORT=$(az keyvault secret show --name SmtpPort --vault-name $VAULT_NAME --query value -o tsv)
 SMTPUSER=$(az keyvault secret show --name SmtpUser --vault-name $VAULT_NAME --query value -o tsv)
@@ -34,6 +36,8 @@ NAMESPACE06="icap-central-monitoring"
 NAMESPACE07="icap-grafana"
 NAMESPACE08="icap-filedrop"
 NAMESPACE09="icap-elk-stack"
+
+kubectl config use-context $CLUSTER_NAME
 
 # Create namespaces for deployment
 kubectl create ns $NAMESPACE01
@@ -120,4 +124,4 @@ kubectl create -n $NAMESPACE03 secret generic ncfspolicyupdateservicesecret --fr
 (cd ./certs/mgmt-cert/; kubectl create -n $NAMESPACE04 secret tls tls-secret --key tls.key --cert certificate.crt)
 
 # Create secret for TLS certs & keys - needs to be part of the 'icap-filedrop' namespace
-(cd ./certs/filedrop-cert; kubectl create -n $NAMESPACE08 secret tls tls-secret --key tls.key --cert certificate.crt)
+(cd ./certs/file-drop-cert; kubectl create -n $NAMESPACE08 secret tls tls-secret --key tls.key --cert certificate.crt)

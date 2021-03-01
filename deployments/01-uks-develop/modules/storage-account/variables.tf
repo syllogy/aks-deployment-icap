@@ -1,13 +1,13 @@
-variable "resource_group_name" {
+variable "resource_group" {
   description = "This is a consolidated name based on org, environment, region"
   type        = string
-  default 	  = "gw-icap-uks-storage"
+  default 	  = ""
 }
 
 variable "region" {
   description = "The Azure Region/location the resource will be installed"
   type        = string
-  default     = "UKSOUTH"
+  default     = ""
 }
 
 variable "file_share_name01" {

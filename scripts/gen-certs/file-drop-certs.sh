@@ -31,18 +31,18 @@ key_name=tls
 #Create the request
 echo "Creating CSR"
 
-(cd ./certs/filedrop-cert; openssl req -newkey rsa:2048 -nodes -keyout $key_name.key -x509 -days 365 -out $crt_name.crt  \
+(cd ./certs/file-drop-cert; openssl req -newkey rsa:2048 -nodes -keyout $key_name.key -x509 -days 365 -out $crt_name.crt  \
     -subj "/C=$country/ST=$state/L=$locality/O=$organization/OU=$organizationalunit/CN=$commonname/emailAddress=$email")
 
 echo "---------------------------"
 echo "-----Below is your crt-----"
 echo "---------------------------"
 echo
-(cd ./certs/filedrop-cert; cat $crt_name.crt)
+(cd ./certs/file-drop-cert; cat $crt_name.crt)
 
 echo
 echo "---------------------------"
 echo "-----Below is your Key-----"
 echo "---------------------------"
 echo
-(cd ./certs/filedrop-cert; cat $key_name.key)
+(cd ./certs/file-drop-cert; cat $key_name.key)

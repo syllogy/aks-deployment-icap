@@ -1,17 +1,35 @@
-variable "azure_region" {
+variable "region" {
   description = "Metadata Azure Region"
   type        = string
-  default     = "uksouth"
+  default     = ""
 }
 
 variable "resource_group" {
   description = "Azure Resource Group"
   type        = string
-  default     = "gw-icap-uks-keyvault"
+  default     = ""
 }
 
 variable "kv_name" {
   description = "The name of the key vault"
   type        = string
-  default     = "icap-uks-keyvault"
+  default  = ""
+}
+
+variable "icap_dns" {
+  description = "Name of the common name used for the certs"
+  type        = string
+  default     = ""
+}
+
+variable "mgmt_dns" {
+  description = "Name of the common name used for the certs"
+  type        = string
+  default     = ""
+}
+
+variable "file_drop_dns" {
+  description = "Name of the common name used for the certs"
+  type        = string
+  default     = ""
 }
