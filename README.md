@@ -1,8 +1,17 @@
-# Instructions
+# Overview
+
+This Terraform deployment will deploy the following resources:
+
+- Storage Account
+- Key vault
+- AKS Cluster
+- All charts needed for ICAP Services via the Helm Provider
+- ArgoCD cluster for managing pipeline
+
 
 ## Table of contents
 
-- [Instructions](#instructions)
+- [Overview](#overview)
   - [Table of contents](#table-of-contents)
   - [1. Pre-requisites](#1-pre-requisites)
     - [Azure Subscription Pre Requisite](#azure-subscription-pre-requisite)
@@ -101,7 +110,7 @@ echo $ARM_ACCESS_KEY
 
 ### 2.4 File Modifications
 
-- backend.tfvars - this will be used as azure backend to store deployment state. Run below script
+- backend.tfvars - this will be used as azure backend to store deployment state.
 
 - terraform.tfvars
 
@@ -145,12 +154,12 @@ terraform validate
 
 - Run
 ```
-terraform plan
+terraform plan -var-file=terraform.tfvars
 ```
 
 - Now you're ready to run apply
 ``` 
-terraform apply 
+terraform apply -var-file=terraform.tfvars
 
 # You will get below output. Make sure to enter YES when prompt
 Do you want to perform these actions?
