@@ -1,13 +1,13 @@
-variable "resource_group_name" {
+variable "resource_group" {
   description = "This is a consolidated name based on org, environment, region"
   type        = string
-  default 	  = "gw-icap-neu-storage"
+  default 	  = ""
 }
 
 variable "region" {
   description = "The Azure Region/location the resource will be installed"
   type        = string
-  default     = "NORTHEUROPE"
+  default     = ""
 }
 
 variable "file_share_name01" {
@@ -41,7 +41,7 @@ variable "application_replication_type" {
 }
 
 variable "access_tier" {
-  description = "The Storage Account access tier"
+  description = "The Storage Account replication type"
   type        = string
   default     = "Hot"
 }

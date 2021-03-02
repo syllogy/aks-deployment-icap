@@ -154,18 +154,3 @@ argocd app create $FILE_DROP-uks-develop --repo $ICAP_REPO --path $PATH_FILEDROP
 # argocd app create $MONITORING_SERVICE --repo $ICAP_REPO --path $PATH_PROMETHEUS --dest-server https://$QA_UKS_CLUSTER_FQDN:443 --dest-namespace $NS_MONITORING --revision $REV_MAIN --parameter $PARAM_REMOVE_SECRETS
 
 # argocd app create $MONITORING_SERVICE --repo $ICAP_REPO --path $PATH_GRAFANA --dest-server https://$QA_UKS_CLUSTER_FQDN:443 --dest-namespace $NS_MONITORING --revision $REV_MAIN --parameter $PARAM_REMOVE_SECRETS
-
-# # Create USEAST Cluster Apps
-# argocd app create $RABBITMQ_OPERATOR-useast-main --repo $ICAP_REPO --path $PATH_RABBITMQ --dest-server https://$USEAST_CLUSTER_FQDN:443 --dest-namespace $NS_RABBIT --revision $REV_MAIN --parameter $PARAM_REMOVE_SECRETS
-
-# argocd app create $ADAPTATION_SERVICE-useast-main --repo $ICAP_REPO --path $PATH_ADAPTATION --dest-server https://$USEAST_CLUSTER_FQDN:443 --dest-namespace $NS_ADAPTATION --revision $REV_MAIN --parameter $PARAM_REMOVE_SECRETS
-
-# argocd app create $ADMINISTRATION_SERVICE-useast-main --repo $ICAP_REPO --path $PATH_ADMINISTRATION --dest-server https://$USEAST_CLUSTER_FQDN:443 --dest-namespace $NS_ADMINISTRATION --revision $REV_MAIN --parameter $PARAM_REMOVE_SECRETS
-
-# argocd app create $PATH_NCFS-useast-main --repo $ICAP_REPO --path $PATH_NCFS --dest-server https://$USEAST_CLUSTER_FQDN:443 --dest-namespace $NS_NCFS --revision $REV_MAIN --parameter $PARAM_REMOVE_SECRETS
-
-# argocd app create $CERT_MANAGER-neu-test --repo $ICAP_REPO --path $PATH_CERT --dest-server https://$USEAST_CLUSTER_FQDN:443 --dest-namespace default --revision $REV_MAIN --parameter $PARAM_REMOVE_SECRETS
-
-# argocd app create $MONITORING_SERVICE-neu-test --repo $ICAP_REPO --path $PATH_PROMETHEUS --dest-server https://$USEAST_CLUSTER_FQDN:443 --dest-namespace default --revision $REV_MAIN --parameter $PARAM_REMOVE_SECRETS
-
-# argocd app create $MONITORING_SERVICE-neu-test --repo $ICAP_REPO --path $PATH_GRAFANA --dest-server https://$USEAST_CLUSTER_FQDN:443 --dest-namespace default --revision $REV_MAIN --parameter $PARAM_REMOVE_SECRETS

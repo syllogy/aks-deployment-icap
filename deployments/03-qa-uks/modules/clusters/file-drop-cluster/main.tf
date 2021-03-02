@@ -1,22 +1,29 @@
-data "azurerm_key_vault" "keyvault" {
-  name                = var.keyvault_name
-  resource_group_name = var.vault_resourcegroup_name
+# Get cluster host, certs etc
+provider "helm" {
+  kubernetes {
+    host                   = azurerm_kubernetes_cluster.file-drop.kube_config.0.host
+
+    client_certificate     = base64decode(azurerm_kubernetes_cluster.file-drop.kube_config.0.client_certificate)
+    client_key             = base64decode(azurerm_kubernetes_cluster.file-drop.kube_config.0.client_key)
+    cluster_ca_certificate = base64decode(azurerm_kubernetes_cluster.file-drop.kube_config.0.cluster_ca_certificate)
+    }
 }
 
-data "azurerm_key_vault_secret" "spusername" {
-  name         = var.secret_sp_1
-  key_vault_id = data.azurerm_key_vault.keyvault.id
+resource "azurerm_resource_group" "file_drop_rg" {
+  name     = var.resource_group
+  location = var.region
+
+  tags = {
+    created_by         = "Glasswall Solutions"
+    deployment_version = "1.0.0"
+    environment        = "Development"
+  }
 }
 
-data "azurerm_key_vault_secret" "sppassword" {
-  name         = var.secret_sp_2
-  key_vault_id = data.azurerm_key_vault.keyvault.id
-}
-
-resource "azurerm_kubernetes_cluster" "icap-deploy" {
+resource "azurerm_kubernetes_cluster" "file-drop" {
   name                = var.cluster_name
-  location            = var.region
-  resource_group_name = var.resource_group
+  location            = azurerm_resource_group.file_drop_rg.location
+  resource_group_name = azurerm_resource_group.file_drop_rg.name
   dns_prefix          = "${var.cluster_name}-k8s"
 
   default_node_pool {
@@ -26,9 +33,8 @@ resource "azurerm_kubernetes_cluster" "icap-deploy" {
     os_disk_size_gb = 40
   }
 
-  service_principal {
-    client_id     = data.azurerm_key_vault_secret.spusername.value
-    client_secret = data.azurerm_key_vault_secret.sppassword.value
+  identity {
+    type = "SystemAssigned"
   }
 
   role_based_access_control {
@@ -36,6 +42,89 @@ resource "azurerm_kubernetes_cluster" "icap-deploy" {
   }
 
   tags = {
-    created_by = "Mattp" 
+    created_by         = "Glasswall Solutions"
+    deployment_version = "1.0.0"
+    environment        = "Development"
   }
+}
+
+# Deploy File-Drop helm chart
+resource "helm_release" "file-drop" {
+  name             = var.release_name01
+  namespace        = var.namespace01
+  create_namespace = true
+  chart            = var.chart_path01
+  wait             = true
+  cleanup_on_fail  = true
+  
+  set {
+        name  = "secrets"
+        value = "null"
+    }
+  
+  set {
+        name  = "nginx.ingress.host"
+        value = var.file_drop_dns_name_01
+    }
+
+  depends_on = [ 
+    azurerm_kubernetes_cluster.file-drop,
+    helm_release.cert-manager,
+    helm_release.ingress-nginx,
+   ]
+}
+
+# Deploy Cert-Manager helm chart
+resource "helm_release" "cert-manager" {
+  name             = var.release_name02
+  chart            = var.chart_repo02
+  wait             = true
+  cleanup_on_fail  = true
+
+  depends_on = [ 
+    azurerm_kubernetes_cluster.file-drop,
+   ]
+}
+
+# Deploy Ingress-Nginx helm chart
+resource "helm_release" "ingress-nginx" {
+  name             = var.release_name03
+  namespace        = var.namespace03
+  create_namespace = true
+  chart            = var.chart_repo03
+  wait             = true
+  cleanup_on_fail  = true
+
+  set {
+        name  = "controller.service.annotations.service\\.beta\\.kubernetes\\.io/azure-dns-label-name"
+        value = var.a_record_02
+    }
+
+  depends_on = [ 
+    azurerm_kubernetes_cluster.file-drop,
+   ]
+}
+
+resource "null_resource" "get_kube_context" {
+
+ provisioner "local-exec" {
+
+    command = "az aks get-credentials --resource-group ${var.resource_group} --name ${var.cluster_name} --overwrite-existing"
+  }
+  
+  depends_on = [
+    azurerm_kubernetes_cluster.file-drop,
+  ]
+}
+
+resource "null_resource" "load_k8_secrets" {
+
+ provisioner "local-exec" {
+
+    command = "/bin/bash ../../scripts/k8s_scripts/file-drop-secrets.sh ${var.cluster_name}"
+  }
+
+  depends_on = [
+    null_resource.get_kube_context,
+  ]
 }

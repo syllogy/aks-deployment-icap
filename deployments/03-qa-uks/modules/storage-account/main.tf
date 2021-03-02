@@ -7,7 +7,7 @@ resource "random_string" "name" {
 
 # Create Resource Group
 resource "azurerm_resource_group" "rg" {
-  name     = var.resource_group_name
+  name     = var.resource_group
   location = var.region
 }
 
