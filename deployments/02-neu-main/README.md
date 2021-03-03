@@ -25,10 +25,13 @@ No resources.
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
+| argocd\_cluster\_context | The Argocd context name for use with the Argocd CLI | `string` | n/a | yes |
 | azure\_region | The Azure Region | `string` | n/a | yes |
 | domain | This is a domain of organization | `string` | n/a | yes |
+| enable\_argocd\_pipeline | The bool to enable the Argocd pipeline | `bool` | `true` | no |
 | icap\_port | The Azure backend vault name | `string` | n/a | yes |
 | icap\_tlsport | The Azure backend storage account | `string` | n/a | yes |
+| revision | The revision/branch used for ArgoCD | `string` | n/a | yes |
 | suffix | This is a consolidated name based on org, environment, region | `string` | n/a | yes |
 
 ## Outputs

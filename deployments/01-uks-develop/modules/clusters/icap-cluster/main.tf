@@ -1,4 +1,3 @@
-
 # Get cluster host, certs etc
 provider "helm" {
   kubernetes {
@@ -257,5 +256,19 @@ resource "null_resource" "load_k8_secrets" {
 
   depends_on = [
     null_resource.get_kube_context,
+  ]
+}
+
+resource "null_resource" "add_apps_argo" {
+
+  count = var.enable_argocd_pipeline ? 1 : 0
+
+ provisioner "local-exec" {
+
+    command = "/bin/bash ../../scripts/argocd_scripts/argocd-app-deploy.sh ${var.resource_group} ${var.cluster_name} ${var.region} ${var.suffix} ${var.revision} ${var.argocd_cluster_context}"
+  }
+
+  depends_on = [
+    helm_release.adaptation,
   ]
 }
