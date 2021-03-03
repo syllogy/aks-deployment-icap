@@ -24,6 +24,10 @@ module "create_aks_cluster" {
 	kv_vault_name             =    "icap-aks-kv-${var.suffix}"
 	storage_resource          =    "icap-aks-storage-${var.suffix}"
 
+	argocd_cluster_context	  =	   var.argocd_cluster_context
+	revision 				  =	   var.revision
+	suffix					  =    var.suffix
+
 }
 
 module "create_aks_cluster_file_drop" {
@@ -47,7 +51,6 @@ module "create_storage_account" {
 }
 
 # Key Vault Modules
-
 module "create_key_vault" {
 	source					  =   "./modules/keyvault"
 

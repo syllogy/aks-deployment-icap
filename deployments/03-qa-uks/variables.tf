@@ -14,11 +14,21 @@ variable "domain" {
 }
 
 variable "icap_port" {
-    description = "The Azure backend vault name"
-    type = string
+  description = "The Azure backend vault name"
+  type        = string
 }
 
 variable "icap_tlsport" {
-    description = "The Azure backend storage account"
-    type = string
+  description = "The Azure backend storage account"
+  type        = string
+}
+
+variable "argocd_cluster_context" {
+  description = "The Argocd context name for use with the Argocd CLI"
+  type        = string
+}
+
+variable "revision" {
+  description = "The revision/branch used for ArgoCD"
+  type        = string
 }

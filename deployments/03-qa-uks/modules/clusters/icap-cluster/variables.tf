@@ -43,7 +43,25 @@ variable "storage_resource" {
 variable "kv_vault_name" {
   description = "This is kv_vault_name"
   type        = string
- default      = ""
+  default     = ""
+}
+
+variable "argocd_cluster_context" {
+  description = "This is the argocd cluster name"
+  type        = string
+  default     = ""
+}
+
+variable "revision" {
+  description = "The revision/branch used for ArgoCD"
+  type        = string
+  default     = ""
+}
+
+variable "suffix" {
+  description = "This is a consolidated name based on org, environment, region"
+  type        = string
+  default     = ""
 }
 
 # Chart Variables

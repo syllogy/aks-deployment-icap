@@ -47,7 +47,6 @@ module "create_storage_account" {
 }
 
 # Key Vault Modules
-
 module "create_key_vault" {
 	source					  =   "./modules/keyvault"
 

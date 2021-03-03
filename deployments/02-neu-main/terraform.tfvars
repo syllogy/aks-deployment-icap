@@ -1,4 +1,4 @@
-azure_region           = "uksouth"
+azure_region           = "northeurope"
 suffix                 = "main"
 
 domain                 = "cloudapp.azure.com"

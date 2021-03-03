@@ -14,11 +14,11 @@ variable "domain" {
 }
 
 variable "icap_port" {
-    description = "The Azure backend vault name"
+    description = "The port non-tls port for the ICAP-Service"
     type = string
 }
 
 variable "icap_tlsport" {
-    description = "The Azure backend storage account"
+    description = "The port tls port for the ICAP-Service"
     type = string
 }

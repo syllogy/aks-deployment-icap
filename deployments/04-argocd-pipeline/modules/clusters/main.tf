@@ -2,11 +2,11 @@
 # Get cluster host, certs etc
 provider "helm" {
   kubernetes {
-    host                   = azurerm_kubernetes_cluster.icap-deploy.kube_config.0.host
+    host                   = azurerm_kubernetes_cluster.argo-deploy.kube_config.0.host
 
-    client_certificate     = base64decode(azurerm_kubernetes_cluster.icap-deploy.kube_config.0.client_certificate)
-    client_key             = base64decode(azurerm_kubernetes_cluster.icap-deploy.kube_config.0.client_key)
-    cluster_ca_certificate = base64decode(azurerm_kubernetes_cluster.icap-deploy.kube_config.0.cluster_ca_certificate)
+    client_certificate     = base64decode(azurerm_kubernetes_cluster.argo-deploy.kube_config.0.client_certificate)
+    client_key             = base64decode(azurerm_kubernetes_cluster.argo-deploy.kube_config.0.client_key)
+    cluster_ca_certificate = base64decode(azurerm_kubernetes_cluster.argo-deploy.kube_config.0.cluster_ca_certificate)
     }
 }
 
@@ -54,7 +54,7 @@ resource "helm_release" "argocd" {
   name             = var.release_name01
   namespace        = var.namespace01
   create_namespace = true
-  chart            = var.chart_repo01
+  chart            = var.chart_path01
   wait             = true
   cleanup_on_fail  = true
 
