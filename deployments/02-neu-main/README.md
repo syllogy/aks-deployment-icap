@@ -27,8 +27,8 @@ No resources.
 |------|-------------|------|---------|:--------:|
 | azure\_region | The Azure Region | `string` | n/a | yes |
 | domain | This is a domain of organization | `string` | n/a | yes |
-| icap\_port | The port non-tls port for the ICAP-Service | `string` | n/a | yes |
-| icap\_tlsport | The port tls port for the ICAP-Service | `string` | n/a | yes |
+| icap\_port | The Azure backend vault name | `string` | n/a | yes |
+| icap\_tlsport | The Azure backend storage account | `string` | n/a | yes |
 | suffix | This is a consolidated name based on org, environment, region | `string` | n/a | yes |
 
 ## Outputs

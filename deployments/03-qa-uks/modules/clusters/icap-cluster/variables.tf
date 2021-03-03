@@ -64,6 +64,12 @@ variable "suffix" {
   default     = ""
 }
 
+variable "enable_argocd_pipeline" {
+  description = "The bool to enable the Argocd pipeline"
+  type        = bool
+  default     = true
+}
+
 # Chart Variables
 ## Adaptation Chart
 variable "release_name01" {

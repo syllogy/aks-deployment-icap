@@ -25,6 +25,7 @@ module "create_aks_cluster" {
 	storage_resource          =    "icap-aks-storage-${var.suffix}"
 
 	argocd_cluster_context	  =	   var.argocd_cluster_context
+	enable_argocd_pipeline 	  =	   var.enable_argocd_pipeline
 	revision 				  =	   var.revision
 	suffix					  =    var.suffix
 

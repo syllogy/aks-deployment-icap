@@ -32,3 +32,9 @@ variable "revision" {
   description = "The revision/branch used for ArgoCD"
   type        = string
 }
+
+variable "enable_argocd_pipeline" {
+  description = "The bool to enable the Argocd pipeline"
+  type        = bool
+  default     = true
+}
