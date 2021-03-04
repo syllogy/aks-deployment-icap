@@ -8,4 +8,5 @@ icap_tlsport           = 1345
 
 argocd_cluster_context = "argocd-aks-deploy"
 enable_argocd_pipeline = true
+enable_helm_deployment = false
 revision               = "develop"

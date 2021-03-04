@@ -38,3 +38,9 @@ variable "enable_argocd_pipeline" {
   type        = bool
   default     = true
 }
+
+variable "enable_helm_deployment" {
+  description = "The bool to enable the helm deployment"
+  type        = bool
+  default     = true
+}
