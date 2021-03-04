@@ -1,5 +1,5 @@
-azure_region           = "northeurope"
-suffix                 = "main"
+azure_region           = "uksouth"
+suffix                 = "dev"
 
 domain                 = "cloudapp.azure.com"
 
@@ -8,4 +8,4 @@ icap_tlsport           = 1345
 
 argocd_cluster_context = "argocd-aks-deploy"
 enable_argocd_pipeline = true
-revision               = "main"
+revision               = "develop"

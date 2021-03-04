@@ -23,6 +23,36 @@ variable "node_name" {
   default     = "gwicapnode"
 }
 
+variable "argocd_cluster_context" {
+  description = "This is the argocd cluster name"
+  type        = string
+  default     = ""
+}
+
+variable "revision" {
+  description = "The revision/branch used for ArgoCD"
+  type        = string
+  default     = ""
+}
+
+variable "suffix" {
+  description = "This is a consolidated name based on org, environment, region"
+  type        = string
+  default     = ""
+}
+
+variable "enable_argocd_pipeline" {
+  description = "The bool to enable the Argocd pipeline"
+  type        = bool
+  default     = true
+}
+
+variable "enable_helm_deployment" {
+  description = "The bool to enable the helm deployment"
+  type        = bool
+  default     = true
+}
+
 # Chart Variables
 ## FIle-Drop Chart
 variable "release_name01" {

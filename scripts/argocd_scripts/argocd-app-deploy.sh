@@ -46,8 +46,9 @@ NS_ELK_STACK="icap-elk-stack"
 # Parameters
 PARAM_REMOVE_SECRETS="secrets=null"
 
-ICAP_DNS="lbService.dnsname=icap-$SUFFIX.$REGION.$DOMAIN"
+ICAP_DNS="lbService.dnsname=icap-$SUFFIX"
 MGMT_DNS_01="controller.service.annotations.service\\.beta\\.kubernetes\\.io/azure-dns-label-name=management-ui-$SUFFIX.$REGION.$DOMAIN"
+MGMT_DNS_02="managementui.ingress.host=management-ui-$SUFFIX.$REGION.$DOMAIN"
 IDENTITY_MGMT_DNS_02="identitymanagementservice.configuration.ManagementUIEndpoint=management-ui-$SUFFIX.$REGION.$DOMAIN"
 FILEDROP_DNS="controller.service.annotations.service\\.beta\\.kubernetes\\.io/azure-dns-label-name=file-drop-$SUFFIX.$REGION.$DOMAIN"
 
@@ -65,7 +66,7 @@ argocd app create $RABBITMQ_OPERATOR-$REGION-$REVISION --repo $ICAP_REPO --path 
 
 argocd app create $ADAPTATION_SERVICE-$REGION-$REVISION --repo $ICAP_REPO --path $PATH_ADAPTATION --dest-server https://$CLUSTER_FQDN:443 --dest-namespace $NS_ADAPTATION --revision $REVISION --parameter $PARAM_REMOVE_SECRETS --parameter $ICAP_DNS --sync-policy automated --auto-prune
 
-argocd app create $ADMINISTRATION_SERVICE-$REGION-$REVISION --repo $ICAP_REPO --path $PATH_ADMINISTRATION --dest-server https://$CLUSTER_FQDN:443 --dest-namespace $NS_ADMINISTRATION --revision $REVISION --parameter $PARAM_REMOVE_SECRETS --parameter $MGMT_DNS_01 --parameter $IDENTITY_MGMT_DNS_02 --sync-policy automated --auto-prune
+argocd app create $ADMINISTRATION_SERVICE-$REGION-$REVISION --repo $ICAP_REPO --path $PATH_ADMINISTRATION --dest-server https://$CLUSTER_FQDN:443 --dest-namespace $NS_ADMINISTRATION --revision $REVISION --parameter $PARAM_REMOVE_SECRETS --parameter $MGMT_DNS_01 --parameter $IDENTITY_MGMT_DNS_02 --parameter $MGMT_DNS_02 --sync-policy automated --auto-prune
 
 argocd app create $ELK_STACK-$REGION-$REVISION --repo $ICAP_REPO --path $PATH_ELK_STACK --dest-server https://$CLUSTER_FQDN:443 --dest-namespace $NS_ELK_STACK --revision $REVISION --parameter $PARAM_REMOVE_SECRETS --sync-policy automated --auto-prune
 

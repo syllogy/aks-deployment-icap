@@ -29,7 +29,7 @@ resource "azurerm_kubernetes_cluster" "file-drop" {
   default_node_pool {
     name            = var.node_name
     node_count      = 1
-    vm_size         = "Standard_DS2_v2"
+    vm_size         = "Standard_A4_v2"
     os_disk_size_gb = 40
   }
 
@@ -50,6 +50,9 @@ resource "azurerm_kubernetes_cluster" "file-drop" {
 
 # Deploy File-Drop helm chart
 resource "helm_release" "file-drop" {
+
+  count = var.enable_helm_deployment ? 1 : 0
+
   name             = var.release_name01
   namespace        = var.namespace01
   create_namespace = true
@@ -76,6 +79,9 @@ resource "helm_release" "file-drop" {
 
 # Deploy Cert-Manager helm chart
 resource "helm_release" "cert-manager" {
+
+  count = var.enable_helm_deployment ? 1 : 0
+
   name             = var.release_name02
   chart            = var.chart_repo02
   wait             = true
@@ -88,6 +94,7 @@ resource "helm_release" "cert-manager" {
 
 # Deploy Ingress-Nginx helm chart
 resource "helm_release" "ingress-nginx" {
+
   name             = var.release_name03
   namespace        = var.namespace03
   create_namespace = true
@@ -122,6 +129,20 @@ resource "null_resource" "load_k8_secrets" {
  provisioner "local-exec" {
 
     command = "/bin/bash ../../scripts/k8s_scripts/file-drop-secrets.sh ${var.cluster_name}"
+  }
+
+  depends_on = [
+    null_resource.get_kube_context,
+  ]
+}
+
+resource "null_resource" "add_apps_argo" {
+
+  count = var.enable_argocd_pipeline ? 1 : 0
+
+ provisioner "local-exec" {
+
+    command = "/bin/bash ../../scripts/argocd_scripts/fd-argocd-app-deploy.sh ${var.resource_group} ${var.cluster_name} ${var.region} ${var.suffix} ${var.revision} ${var.argocd_cluster_context}"
   }
 
   depends_on = [

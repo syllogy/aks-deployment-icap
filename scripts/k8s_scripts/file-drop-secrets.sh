@@ -1,10 +1,12 @@
 #!/bin/bash
 CLUSTER_NAME=$1
-NAMESPACE01="icap-filedrop"
+NAMESPACE01="icap-file-drop"
 NAMESPACE02="ingress-nginx"
+NAMESPACE03="icap-central-monitoring"
 
 kubectl create ns $NAMESPACE01
 kubectl create ns $NAMESPACE02
+kubectl create ns $NAMESPACE03
 
 kubectl config use-context $CLUSTER_NAME
 
