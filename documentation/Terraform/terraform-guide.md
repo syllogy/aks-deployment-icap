@@ -70,20 +70,23 @@ In order to store the state file you need to make sure you have created a storag
 
 In order to customise the deployment so you can identify it for you own usage, you can use the ```terraform.tfvars``` file. This file has variables that will give values you input to make sure it's unique and is deployed in the correct regions etc.
 
-Typically what the ```tfvars``` looks like:
-
-```
-azure_region           = "uksouth"
-suffix                 = "dev"
-
-domain                 = "cloudapp.azure.com"
-
-icap_port              = 1344
-icap_tlsport           = 1345
-```
+| Name | Description | Type | Default | Required |
+|------|-------------|------|---------|:--------:|
+| argocd\_cluster\_context | The Argocd context name for use with the Argocd CLI | `string` | n/a | yes |
+| azure\_region | The Azure Region | `string` | n/a | yes |
+| domain | This is a domain of organization | `string` | n/a | yes |
+| enable\_argocd\_pipeline | The bool to enable the Argocd pipeline | `bool` | `true` | no |
+| icap\_port | The Azure backend vault name | `string` | n/a | yes |
+| icap\_tlsport | The Azure backend storage account | `string` | n/a | yes |
+| revision | The revision/branch used for ArgoCD | `string` | n/a | yes |
+| suffix | This is a consolidated name based on org, environment, region | `string` | n/a | yes |
 
 The main variable that will help you identify a cluster is the ```suffix```. This will get appended into a resource name, so if you set it to ```xyz``` you would then see a cluster with the same once it's deployed. Something to bear in mind is you are limited on characters, as there is already a naming convection set within the ```main.tf``` file within the root of each deployment. Typically you would want to use between 1 and 5 characters in order for it to not exceed the character limit.
 
 Other than this you should not need to touch any of the actual terraform code to deploy a working cluster.
 
-### File Structure
+### Enabling a pipeline
+
+There is an bool setup in the tfvars that will enable or disable the creation of an ArgoCD pipeline. This is to give people the option to use a cluster for testing a new change and have the ability to push new changes from their branch they are working on. 
+
+There is a default that is setup within the ```tfvars``` which will use the already stood up ArgoCD cluster. It will take the suffix you set and the region so you can find it within ArgoCD. 

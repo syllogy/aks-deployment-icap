@@ -4,10 +4,9 @@ This Terraform deployment will deploy the following resources:
 
 - Storage Account
 - Key vault
-- AKS Cluster
-- All charts needed for ICAP Services via the Helm Provider
-- ArgoCD cluster for managing pipeline
-
+- Two AKS Clusters
+- All charts needed for ICAP and File Drop Services via the Helm Provider
+- ArgoCD cluster for managing pipeline (Optional as you can enable or disable)
 
 ## Table of contents
 
@@ -15,6 +14,11 @@ This Terraform deployment will deploy the following resources:
   - [Table of contents](#table-of-contents)
   - [1. Pre-requisites](#1-pre-requisites)
     - [Azure Subscription Pre Requisite](#azure-subscription-pre-requisite)
+  - [Quickstart guide](#quickstart-guide)
+    - [Clone Repo.](#clone-repo)
+    - [Edit terraform.tfvars](#edit-terraformtfvars)
+    - [Change key in backend.tfvars](#change-key-in-backendtfvars)
+    - [Init and Apply](#init-and-apply)
   - [2. Usage](#2-usage)
     - [2.1 Clone Repo.](#21-clone-repo)
     - [2.2 Firstly make sure you are logged in and using the correct subscription.](#22-firstly-make-sure-you-are-logged-in-and-using-the-correct-subscription)
@@ -65,6 +69,69 @@ This Terraform deployment will deploy the following resources:
 - The total amount of vCPU available in an Azure region is determined by the subscription itself.
 - When deploying, it is essential to ensure that there is enough vCPU available within your subscription to provision the node type and count specified.
 
+
+## Quickstart guide
+
+### Clone Repo.
+
+```
+git clone https://github.com/k8-proxy/icap-aks-delivery.git
+cd icap-aks-delivery
+git submodule init
+git submodule update
+```
+
+### Edit terraform.tfvars 
+
+Open ```terraform.tfvars``` and change the suffix to something unique (not exceeding more than 5 chars) and make sure ```enable_argocd_pipeline``` is set to false.
+
+```
+azure_region           = "uksouth"
+suffix                 = "qa"
+
+domain                 = "cloudapp.azure.com"
+
+icap_port              = 1344
+icap_tlsport           = 1345
+
+argocd_cluster_context = "argocd-aks-deploy"
+enable_argocd_pipeline = false
+revision               = "main"
+```
+
+### Change key in backend.tfvars
+
+You will also need to change to the key within the ```backend.tfvars``` as this will store you deployments state. The only part that needs to be unique is everything before ```.terraform.tfstate```
+
+```
+resource_group_name  = "gw-icap-tfstate"
+storage_account_name = "tfstate263"
+container_name       = "gw-icap-tfstate"
+key                  = "03qauks.terraform.tfstate"
+```
+
+### Init and Apply
+
+Now you're ready to init and apply 
+
+```
+terraform init -backend-config="backend.tfvars"
+```
+
+```
+terraform apply -var-file=terraform.tfvars
+```
+
+Once terraform has finished the ICAP and File Drop clusters, storage account, key vault and charts would have been deployed. The URLs for the services use the following naming convention:
+
+```
+icap-$SUFFIX.$REGION.cloudapp.azure.com
+
+management-ui-$SUFFIX.$REGION.cloudapp.azure.com
+
+file-drop-$SUFFIX.$REGION.cloudapp.azure.com
+```
+
 ## 2. Usage
 
 ### 2.1 Clone Repo.
@@ -74,7 +141,6 @@ git clone https://github.com/k8-proxy/icap-aks-delivery.git
 cd icap-aks-delivery
 git submodule init
 git submodule update
-
 ```
    
 ### 2.2 Firstly make sure you are logged in and using the correct subscription.

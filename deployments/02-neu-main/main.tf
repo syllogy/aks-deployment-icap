@@ -26,6 +26,7 @@ module "create_aks_cluster" {
 
 	argocd_cluster_context	  =	   var.argocd_cluster_context
 	enable_argocd_pipeline 	  =	   var.enable_argocd_pipeline
+	enable_helm_deployment    =    var.enable_helm_deployment
 	revision 				  =	   var.revision
 	suffix					  =    var.suffix
 
@@ -39,6 +40,12 @@ module "create_aks_cluster_file_drop" {
 	cluster_name              =   "icap-fd-clu-${var.suffix}-${var.azure_region}"
 	file_drop_dns_name_01     =   "file-drop-${var.suffix}.${var.azure_region}.${var.domain}"
 	a_record_02				  =   "file-drop-${var.suffix}"
+
+	argocd_cluster_context	  =	   var.argocd_cluster_context
+	enable_argocd_pipeline 	  =	   var.enable_argocd_pipeline
+	enable_helm_deployment    =    var.enable_helm_deployment
+	revision 				  =	   var.revision
+	suffix					  =    var.suffix
 
 }
 

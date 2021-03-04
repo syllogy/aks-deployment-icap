@@ -34,7 +34,7 @@ NAMESPACE04="icap-administration"
 NAMESPACE05="icap-rabbit-operator"
 NAMESPACE06="icap-central-monitoring"
 NAMESPACE07="icap-grafana"
-NAMESPACE08="icap-filedrop"
+NAMESPACE08="icap-file-drop"
 NAMESPACE09="icap-elk-stack"
 
 kubectl config use-context $CLUSTER_NAME

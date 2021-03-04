@@ -54,6 +54,9 @@ resource "azurerm_kubernetes_cluster" "icap-deploy" {
 
 # Deploy Adaptation helm chart
 resource "helm_release" "adaptation" {
+
+  count = var.enable_helm_deployment ? 1 : 0
+
   name             = var.release_name01
   namespace        = var.namespace01
   create_namespace = true
@@ -89,6 +92,9 @@ resource "helm_release" "adaptation" {
 
 # Deploy Cert-Manager helm chart
 resource "helm_release" "cert-manager" {
+
+  count = var.enable_helm_deployment ? 1 : 0
+
   name             = var.release_name02
   chart            = var.chart_repo02
   wait             = true
@@ -101,6 +107,7 @@ resource "helm_release" "cert-manager" {
 
 # Deploy Ingress-Nginx helm chart
 resource "helm_release" "ingress-nginx" {
+
   name             = var.release_name03
   namespace        = var.namespace03
   create_namespace = true
@@ -120,6 +127,9 @@ resource "helm_release" "ingress-nginx" {
 
 # Deploy Administrastion helm chart
 resource "helm_release" "administration" {
+
+  count = var.enable_helm_deployment ? 1 : 0
+
   name             = var.release_name04
   namespace        = var.namespace04
   create_namespace = true
@@ -152,6 +162,9 @@ resource "helm_release" "administration" {
 
 # Deploy Rabbitmq-Operator helm chart
 resource "helm_release" "rabbitmq-operator" {
+
+  count = var.enable_helm_deployment ? 1 : 0
+
   name             = var.release_name05
   namespace        = var.namespace05
   create_namespace = true
@@ -171,6 +184,9 @@ resource "helm_release" "rabbitmq-operator" {
 
 # Deploy NCFS helm chart
 resource "helm_release" "ncfs" {
+
+  count = var.enable_helm_deployment ? 1 : 0
+  
   name             = var.release_name06
   namespace        = var.namespace06
   create_namespace = true
@@ -190,6 +206,9 @@ resource "helm_release" "ncfs" {
 
 # Deploy Elk-Stack helm chart
 resource "helm_release" "ekl-stack" {
+
+  count = var.enable_helm_deployment ? 1 : 0
+
   name             = var.release_name07
   namespace        = var.namespace07
   create_namespace = true
@@ -207,33 +226,33 @@ resource "helm_release" "ekl-stack" {
    ]
 }
 
-# Deploy Grafana helm chart
-resource "helm_release" "grafana" {
-  name             = var.release_name08
-  namespace        = var.namespace08
-  create_namespace = true
-  chart            = var.chart_path08
-  wait             = true
-  cleanup_on_fail  = true
+  # # Deploy Grafana helm chart
+  # resource "helm_release" "grafana" {
+  #   name             = var.release_name08
+  #   namespace        = var.namespace08
+  #   create_namespace = true
+  #   chart            = var.chart_path08
+  #   wait             = true
+  #   cleanup_on_fail  = true
 
-  depends_on = [ 
-    azurerm_kubernetes_cluster.icap-deploy,
-   ]
-}
+  #   depends_on = [ 
+  #     azurerm_kubernetes_cluster.icap-deploy,
+  #   ]
+  # }
 
-# Deploy Prometheus helm chart
-resource "helm_release" "prometheus" {
-  name             = var.release_name09
-  namespace        = var.namespace09
-  create_namespace = true
-  chart            = var.chart_path09
-  wait             = true
-  cleanup_on_fail  = true
+  # # Deploy Prometheus helm chart
+  # resource "helm_release" "prometheus" {
+  #   name             = var.release_name09
+  #   namespace        = var.namespace09
+  #   create_namespace = true
+  #   chart            = var.chart_path09
+  #   wait             = true
+  #   cleanup_on_fail  = true
 
-  depends_on = [ 
-    azurerm_kubernetes_cluster.icap-deploy,
-   ]
-}
+  #   depends_on = [ 
+  #     azurerm_kubernetes_cluster.icap-deploy,
+  #   ]
+  # }
 
 resource "null_resource" "get_kube_context" {
 
@@ -269,6 +288,6 @@ resource "null_resource" "add_apps_argo" {
   }
 
   depends_on = [
-    helm_release.adaptation,
+    null_resource.get_kube_context,
   ]
 }
