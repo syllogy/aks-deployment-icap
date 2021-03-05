@@ -17,6 +17,7 @@ This Terraform deployment will deploy the following resources:
     - [1.2 Edit terraform.tfvars](#12-edit-terraformtfvars)
     - [1.3 Change key in backend.tfvars](#13-change-key-in-backendtfvars)
     - [1.4 Init and Apply](#14-init-and-apply)
+    - [Destroying the deployment](#destroying-the-deployment)
   - [2. Deployment and Code documentation](#2-deployment-and-code-documentation)
   - [2.1 Deployment Guide](#21-deployment-guide)
   - [2.2 Code Breakdown](#22-code-breakdown)
@@ -26,7 +27,7 @@ This Terraform deployment will deploy the following resources:
 
 ## 1. Quickstart guide
 
-Below is a quick start guide so you can deploy a cluster to test with fairly quickly, without a ArgoCD pipeline. When you clone the repo down, you can you 01 - 03 deployments to stand up a cluster. 04 is for ArgoCD and should be left where it is.
+Below is a quick start guide so you can deploy a cluster to test with fairly quickly, without a ArgoCD pipeline. When you clone the repo down, you can use 01 - 04 deployments to stand up a cluster. 04 is for ArgoCD and should be left where it is.
 
 ### 1.1 Clone Repo.
 
@@ -88,6 +89,16 @@ management-ui-$SUFFIX.$REGION.cloudapp.azure.com
 
 file-drop-$SUFFIX.$REGION.cloudapp.azure.com
 ```
+
+### Destroying the deployment
+
+In order to destroy the terraform deployment, all you need to do is the following:
+
+```
+terraform destroy -var-file=terraform.tfvars
+```
+
+Let this complete and then the deployment will be destroyed.
 
 ## 2. Deployment and Code documentation
 
