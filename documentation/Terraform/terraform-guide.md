@@ -15,6 +15,7 @@
     - [4.1 ICAP Port customization](#41-icap-port-customization)
   - [5. Deployment](#5-deployment)
     - [5.1 Setup and Initialise Terraform](#51-setup-and-initialise-terraform)
+    - [Destruction](#destruction)
 
 ## 1. Pre-requisites
 
@@ -174,3 +175,13 @@ Only 'yes' will be accepted to approve.
 Enter a value: 
 Enter "yes"
 ```
+
+### Destruction
+
+In order to destroy the terraform deployment, all you need to do is the following:
+
+```
+terraform destroy -var-file=terraform.tfvars
+```
+
+Let this complete and then the deployment will be destroyed.

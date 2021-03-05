@@ -12,6 +12,7 @@ This Terraform deployment will deploy the following resources:
 
 - [Overview](#overview)
   - [Table of contents](#table-of-contents)
+  - [Prerequisites](#prerequisites)
   - [1. Quickstart guide](#1-quickstart-guide)
     - [1.1 Clone Repo.](#11-clone-repo)
     - [1.2 Edit terraform.tfvars](#12-edit-terraformtfvars)
@@ -24,6 +25,11 @@ This Terraform deployment will deploy the following resources:
   - [3. ArgoCD](#3-argocd)
     - [3.1 Documentation](#31-documentation)
 
+## Prerequisites
+
+For all pre-reqs please see full guide below:
+
+[Terraform-Guide](/documentation/Terraform/terraform-guide.md)
 
 ## 1. Quickstart guide
 
