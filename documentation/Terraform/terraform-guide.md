@@ -1,92 +1,176 @@
-# How to use the Terraform Deployment
+# Terraform Guide
 
-## Overview
+## Table of Contents
 
-This code is broken down into 4 separate deployments, in order to keep each cluster isolated from each other and to enable us to down clusters without interfering with others.
+- [Terraform Guide](#terraform-guide)
+  - [Table of Contents](#table-of-contents)
+  - [1. Pre-requisites](#1-pre-requisites)
+    - [1.1 Azure Subscription Pre Requisite](#11-azure-subscription-pre-requisite)
+  - [2. Usage](#2-usage)
+    - [2.1 Clone Repo.](#21-clone-repo)
+    - [2.2 Firstly make sure you are logged in and using the correct subscription.](#22-firstly-make-sure-you-are-logged-in-and-using-the-correct-subscription)
+    - [2.3 Add Terraform Backend Key to Environment](#23-add-terraform-backend-key-to-environment)
+    - [2.4 File Modifications](#24-file-modifications)
+  - [4. Pre deployment](#4-pre-deployment)
+    - [4.1 ICAP Port customization](#41-icap-port-customization)
+  - [5. Deployment](#5-deployment)
+    - [5.1 Setup and Initialise Terraform](#51-setup-and-initialise-terraform)
 
-The code is broken down into various modules for each of the different infrastructure items. The modules are customisable within the limits of the Azurerm provider (documentation [here](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs)) - any changes to infrastructure code should be either added in as a PR, fully tested and finally merged into main.
+## 1. Pre-requisites
 
-A top level view of the deployment is below:
+- Terraform
+- Kubectl
+- Helm
+- Openssl
+- Azure CLI 
+- Bash terminal or terminal able to execute bash scripts
+- JSON processor (jq)
+- Git
+- Microsoft account
+- Azure Subscription
+  - Owner or Azure account administrator role on the Azure subscription
+- Dockerhub account 
+- Tarball containing all images for ICAP service
+
+| Name | Version |
+|------|---------|
+| terraform | >= 0.14 |
+| kubectl | ~> 1.19 |
+| helm | ~> 3.4 |
+| az cli | ~> 2.17 |
+| jq | ~> 1.6 |
+| Openssl | ~> 1.1 |
+| git | ~> 2.27.0 |
+
+### 1.1 Azure Subscription Pre Requisite
+
+- There should be atleast one subscription associated to azure account
+- The subscription should have **Contributor** role which allows user to create and manage virtual machines
+- A service principle with Contributer rights within the subscription of choice
+  - You will need the ```ClientID``` and ```ClientSecret```
+- This documentation will provision a managed Azure Kubernetes (AKS) cluster on which to deploy the application. 
+- This cluster has configured to auto scaling and  runs on a minimum of 4 nodes and maximum of 100 nodes.
+- The specification of the nodes is defined in the `modules/aks01` configuration of this deployment
+- The default configuration is to run 4 nodes of which will consume one virtual CPU’s (vCPU) of  type **Standard_DS4_v2** type anf **100 gb** on disk size  -
+- The total amount of vCPU available in an Azure region is determined by the subscription itself.
+- When deploying, it is essential to ensure that there is enough vCPU available within your subscription to provision the node type and count specified.
+
+## 2. Usage
+
+### 2.1 Clone Repo.
 
 ```
-.
-├── README.md
-├── backend.tfvars
-├── certs
-│   ├── file-drop-cert
-│   │   ├── certificate.crt
-│   │   └── tls.key
-│   ├── icap-cert
-│   │   ├── certificate.crt
-│   │   └── tls.key
-│   └── mgmt-cert
-│       ├── certificate.crt
-│       └── tls.key
-├── main.tf
-├── modules
-│   ├── clusters
-│   │   ├── file-drop-cluster
-│   │   │   ├── README.md
-│   │   │   ├── main.tf
-│   │   │   ├── outputs.tf
-│   │   │   └── variables.tf
-│   │   └── icap-cluster
-│   │       ├── README.md
-│   │       ├── main.tf
-│   │       ├── outputs.tf
-│   │       └── variables.tf
-│   ├── keyvault
-│   │   ├── README.md
-│   │   ├── main.tf
-│   │   └── variables.tf
-│   └── storage-account
-│       ├── README.md
-│       ├── main.tf
-│       ├── outputs.tf
-│       └── variables.tf
-├── output.tf
-├── provider.tf
-├── terraform.tfvars
-└── variables.tf
-
-10 directories, 28 files
+git clone https://github.com/k8-proxy/icap-aks-delivery.git
+cd icap-aks-delivery
+git submodule init
+git submodule update
 ```
-### Backend configuration
+   
+### 2.2 Firstly make sure you are logged in and using the correct subscription.
 
-Terraform uses a state file to store the current infrastructure that has been deployed. This state file can be stored locally or using a configured backend (in our case its blob storage within Azure). When configured properly you should not need to worry about the state file as this will be automatically updated by Terraform on each successful deployment. 
+```bash
 
-We are using a ```tfvars``` file to input the backend configuration for the state file, please see below:
+az login
+az account list --output table
+az account set -s <subscription ID>
+
+# Confirm you are on correct subscription
+az account show
 
 ```
-resource_group_name  = "gw-icap-tfstate"
-storage_account_name = "tfstate263"
-container_name       = "gw-icap-tfstate"
-key                  = "01uks.terraform.tfstate"
+
+### 2.3 Add Terraform Backend Key to Environment
+
+- Check if you have access to key vault using below command:
+```
+az keyvault secret show --name terraform-backend-key --vault-name gw-tfstate-Vault --query value -o tsv
+```
+- Export the environment variable "ARM_ACCESS_KEY" to be able to initialise terraform
+
+```
+export ARM_ACCESS_KEY=$(az keyvault secret show --name terraform-backend-key --vault-name gw-tfstate-Vault --query value -o tsv)
+```
+ 
+- Check if you can access ARM_ACCESS_KEY as variable
+```
+echo $ARM_ACCESS_KEY
 ```
 
-In order to store the state file you need to make sure you have created a storage account within azure and with container blob storage. The only unique part of the file above is the ```key``` - as this is used to differentiate between each deployment.
+### 2.4 File Modifications
 
-### Customising the deployment
+- backend.tfvars - this will be used as azure backend to store deployment state.
 
-In order to customise the deployment so you can identify it for you own usage, you can use the ```terraform.tfvars``` file. This file has variables that will give values you input to make sure it's unique and is deployed in the correct regions etc.
+- terraform.tfvars
 
-| Name | Description | Type | Default | Required |
-|------|-------------|------|---------|:--------:|
-| argocd\_cluster\_context | The Argocd context name for use with the Argocd CLI | `string` | n/a | yes |
-| azure\_region | The Azure Region | `string` | n/a | yes |
-| domain | This is a domain of organization | `string` | n/a | yes |
-| enable\_argocd\_pipeline | The bool to enable the Argocd pipeline | `bool` | `true` | no |
-| icap\_port | The Azure backend vault name | `string` | n/a | yes |
-| icap\_tlsport | The Azure backend storage account | `string` | n/a | yes |
-| revision | The revision/branch used for ArgoCD | `string` | n/a | yes |
-| suffix | This is a consolidated name based on org, environment, region | `string` | n/a | yes |
+```
+vim terraform.tfvars
 
-The main variable that will help you identify a cluster is the ```suffix```. This will get appended into a resource name, so if you set it to ```xyz``` you would then see a cluster with the same once it's deployed. Something to bear in mind is you are limited on characters, as there is already a naming convection set within the ```main.tf``` file within the root of each deployment. Typically you would want to use between 1 and 5 characters in order for it to not exceed the character limit.
+# give a valid region name
+azure_region="UKWEST"
 
-Other than this you should not need to touch any of the actual terraform code to deploy a working cluster.
+# give a short suffix, maximum of 3 character.
+suffix="stg"
 
-### Enabling a pipeline
+# Should be left as default
+domain                 = "cloudapp.azure.com"
 
-There is an bool setup in the tfvars that will enable or disable the creation of an ArgoCD pipeline. This is to give people the option to use a cluster for testing a new change and have the ability to push new changes from their branch they are working on. 
+# Should be left as default
+icap_port              = 1344
+icap_tlsport           = 1345
 
-There is a default that is setup within the ```tfvars``` which will use the already stood up ArgoCD cluster. It will take the suffix you set and the region so you can find it within ArgoCD. 
+# This is the name of the ArgoCD server - should be left as default
+argocd_cluster_context = "argocd-aks-deploy"
+
+# Boolean to enable or disable the ArgoCD Pipeline
+enable_argocd_pipeline = false
+
+# Boolean to deploy using Helm
+enable_helm_deployment = true
+
+# The branch you wish to use with the ArgoCD Pipeline (must be a valid created branch, this will not create a branch for you)
+revision               = "main"
+```
+
+## 4. Pre deployment
+
+### 4.1 ICAP Port customization
+- By default icap-server will run on port 1344 for SSL and 1345 for TLS
+- If you want to customize the above port, please follow below procedure
+```
+vim terraform.tfvars
+```
+- Edit variables `icap_port` and `icap_tlsport` according to requirement and Save it.
+
+Note : Please avoide port 80, 443 since this will be used for file-drop UI.
+
+## 5. Deployment
+### 5.1 Setup and Initialise Terraform
+
+- Run following:
+```
+terraform init -backend-config="backend.tfvars" 
+
+```
+- Run terraform validate/refresh to check for changes within the state, and also to make sure there aren't any issues.
+```
+terraform validate
+
+#Output should be: Success! The configuration is valid.
+```
+
+- Run
+```
+terraform plan -var-file=terraform.tfvars
+```
+
+- Now you're ready to run apply
+``` 
+terraform apply -var-file=terraform.tfvars
+
+# You will get below output. Make sure to enter YES when prompt
+Do you want to perform these actions?
+Terraform will perform the actions described above.
+Only 'yes' will be accepted to approve.
+Enter a value: 
+Enter "yes"
+```

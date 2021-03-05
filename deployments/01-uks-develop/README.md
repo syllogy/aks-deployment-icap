@@ -29,6 +29,7 @@ No resources.
 | azure\_region | The Azure Region | `string` | n/a | yes |
 | domain | This is a domain of organization | `string` | n/a | yes |
 | enable\_argocd\_pipeline | The bool to enable the Argocd pipeline | `bool` | `true` | no |
+| enable\_helm\_deployment | The bool to enable the helm deployment | `bool` | `true` | no |
 | icap\_port | The Azure backend vault name | `string` | n/a | yes |
 | icap\_tlsport | The Azure backend storage account | `string` | n/a | yes |
 | revision | The revision/branch used for ArgoCD | `string` | n/a | yes |
