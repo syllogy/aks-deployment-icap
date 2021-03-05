@@ -17,9 +17,9 @@ This Terraform deployment will deploy the following resources:
     - [1.2 Edit terraform.tfvars](#12-edit-terraformtfvars)
     - [1.3 Change key in backend.tfvars](#13-change-key-in-backendtfvars)
     - [1.4 Init and Apply](#14-init-and-apply)
-  - [Deployment and Code documentation](#deployment-and-code-documentation)
-  - [Deployment Guide](#deployment-guide)
-  - [Code Breakdown](#code-breakdown)
+  - [2. Deployment and Code documentation](#2-deployment-and-code-documentation)
+  - [2.1 Deployment Guide](#21-deployment-guide)
+  - [2.2 Code Breakdown](#22-code-breakdown)
   - [3. ArgoCD](#3-argocd)
     - [3.1 Documentation](#31-documentation)
 
@@ -89,15 +89,15 @@ management-ui-$SUFFIX.$REGION.cloudapp.azure.com
 file-drop-$SUFFIX.$REGION.cloudapp.azure.com
 ```
 
-## Deployment and Code documentation
+## 2. Deployment and Code documentation
 
-## Deployment Guide
+## 2.1 Deployment Guide
 
 For a more detailed guide please use the following README:
 
 [Terraform-Guide](/documentation/Terraform/terraform-guide.md)
 
-## Code Breakdown
+## 2.2 Code Breakdown
 
 The following document covers some of the more custom code used in the deployment, I have not covered all code in this as most of the documentation can be found on the official Hashicorp website. To see the Code Breakdown use the following README:
 
