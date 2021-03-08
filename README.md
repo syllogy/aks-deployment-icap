@@ -32,7 +32,9 @@ This Terraform deployment will deploy the following resources:
 
 For all pre-reqs please see full guide below:
 
-[Terraform-Guide](/documentation/Terraform/terraform-guide.md)
+[Terraform-Guide - With ArgoCD Pipeline](/documentation/Terraform/terraform-guide-with-argo.md)
+
+[Terraform-Guide - Without ArgoCD Pipeline](/documentation/Terraform/terraform-guide-without-argo.md)
 
 ## 1. Quickstart guide
 
@@ -88,6 +90,12 @@ az account set --subscription b8177f86-515f-4bff-bd08-1b9535dbc31b
 ```
 
 ### 1.3 Edit terraform.tfvars 
+
+Working Dir is below:
+
+```bash
+cd ~/deployment/aks-deployment-icap/04-template
+```
 
 Open ```terraform.tfvars``` and change the suffix to something unique (not exceeding more than 5 chars) and make sure ```enable_argocd_pipeline``` is set to false and ```enable_helm_deployment``` is set to true.
 
