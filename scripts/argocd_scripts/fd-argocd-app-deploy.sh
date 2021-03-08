@@ -46,10 +46,10 @@ argocd context $ARGO_CONTEXT
 argocd cluster add $CLUSTER_NAME
 
 # Create NEU Cluster Apps
-argocd app create $FILE_DROP-$REGION-$REVISION --repo $ICAP_REPO --path $PATH_FILEDROP --dest-server https://$CLUSTER_FQDN:443 --dest-namespace $NS_FILEDROP --revision $REVISION --parameter $PARAM_REMOVE_SECRETS --parameter $FILE_DROP_DNS_01 --sync-policy automated --auto-prune
+argocd app create $FILE_DROP-$SUFFIX-$REGION-$REVISION --repo $ICAP_REPO --path $PATH_FILEDROP --dest-server https://$CLUSTER_FQDN:443 --dest-namespace $NS_FILEDROP --revision $REVISION --parameter $PARAM_REMOVE_SECRETS --parameter $FILE_DROP_DNS_01 --sync-policy automated --auto-prune
 
-argocd app create $FILE_DROP-$CERT_MANAGER-$REGION-$REVISION --repo $ICAP_REPO --path $PATH_CERT --dest-server https://$CLUSTER_FQDN:443 --dest-namespace $NS_CERT_MANAGER --revision $REVISION --sync-policy automated --auto-prune
+argocd app create $FILE_DROP-$CERT_MANAGER-$SUFFIX-$REGION-$REVISION --repo $ICAP_REPO --path $PATH_CERT --dest-server https://$CLUSTER_FQDN:443 --dest-namespace $NS_CERT_MANAGER --revision $REVISION --sync-policy automated --auto-prune
 
-argocd app create $FILE_DROP-$PROMETHEUS-$REGION-develop --repo $ICAP_REPO --path $PATH_PROMETHEUS --dest-server https://$CLUSTER_FQDN:443 --dest-namespace $NS_MONITORING --revision develop --sync-policy automated --auto-prune
+argocd app create $FILE_DROP-$PROMETHEUS-$SUFFIX-$REGION-develop --repo $ICAP_REPO --path $PATH_PROMETHEUS --dest-server https://$CLUSTER_FQDN:443 --dest-namespace $NS_MONITORING --revision develop --sync-policy automated --auto-prune
 
-argocd app create $FILE_DROP-$GRAFANA-$REGION-develop --repo $ICAP_REPO --path $PATH_GRAFANA --dest-server https://$CLUSTER_FQDN:443 --dest-namespace $NS_MONITORING --revision develop --sync-policy automated --auto-prune
+argocd app create $FILE_DROP-$GRAFANA-$SUFFIX-$REGION-develop --repo $ICAP_REPO --path $PATH_GRAFANA --dest-server https://$CLUSTER_FQDN:443 --dest-namespace $NS_MONITORING --revision develop --sync-policy automated --auto-prune

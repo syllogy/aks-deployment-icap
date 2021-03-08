@@ -62,18 +62,18 @@ argocd context $ARGO_CONTEXT
 argocd cluster add $CLUSTER_NAME
 
 # Create NEU Cluster Apps
-argocd app create $RABBITMQ_OPERATOR-$REGION-$REVISION --repo $ICAP_REPO --path $PATH_RABBITMQ --dest-server https://$CLUSTER_FQDN:443 --dest-namespace $NS_RABBIT --revision $REVISION --parameter $PARAM_REMOVE_SECRETS --sync-policy automated --auto-prune
+argocd app create $RABBITMQ_OPERATOR-$SUFFIX-$REGION-$REVISION --repo $ICAP_REPO --path $PATH_RABBITMQ --dest-server https://$CLUSTER_FQDN:443 --dest-namespace $NS_RABBIT --revision $REVISION --parameter $PARAM_REMOVE_SECRETS --sync-policy automated --auto-prune
 
-argocd app create $ADAPTATION_SERVICE-$REGION-$REVISION --repo $ICAP_REPO --path $PATH_ADAPTATION --dest-server https://$CLUSTER_FQDN:443 --dest-namespace $NS_ADAPTATION --revision $REVISION --parameter $PARAM_REMOVE_SECRETS --parameter $ICAP_DNS --sync-policy automated --auto-prune
+argocd app create $ADAPTATION_SERVICE-$SUFFIX-$REGION-$REVISION --repo $ICAP_REPO --path $PATH_ADAPTATION --dest-server https://$CLUSTER_FQDN:443 --dest-namespace $NS_ADAPTATION --revision $REVISION --parameter $PARAM_REMOVE_SECRETS --parameter $ICAP_DNS --sync-policy automated --auto-prune
 
-argocd app create $ADMINISTRATION_SERVICE-$REGION-$REVISION --repo $ICAP_REPO --path $PATH_ADMINISTRATION --dest-server https://$CLUSTER_FQDN:443 --dest-namespace $NS_ADMINISTRATION --revision $REVISION --parameter $PARAM_REMOVE_SECRETS --parameter $MGMT_DNS_01 --parameter $IDENTITY_MGMT_DNS_02 --parameter $MGMT_DNS_02 --sync-policy automated --auto-prune
+argocd app create $ADMINISTRATION_SERVICE-$SUFFIX-$REGION-$REVISION --repo $ICAP_REPO --path $PATH_ADMINISTRATION --dest-server https://$CLUSTER_FQDN:443 --dest-namespace $NS_ADMINISTRATION --revision $REVISION --parameter $PARAM_REMOVE_SECRETS --parameter $MGMT_DNS_01 --parameter $IDENTITY_MGMT_DNS_02 --parameter $MGMT_DNS_02 --sync-policy automated --auto-prune
 
-argocd app create $ELK_STACK-$REGION-$REVISION --repo $ICAP_REPO --path $PATH_ELK_STACK --dest-server https://$CLUSTER_FQDN:443 --dest-namespace $NS_ELK_STACK --revision $REVISION --parameter $PARAM_REMOVE_SECRETS --sync-policy automated --auto-prune
+argocd app create $ELK_STACK-$SUFFIX-$REGION-$REVISION --repo $ICAP_REPO --path $PATH_ELK_STACK --dest-server https://$CLUSTER_FQDN:443 --dest-namespace $NS_ELK_STACK --revision $REVISION --parameter $PARAM_REMOVE_SECRETS --sync-policy automated --auto-prune
 
-argocd app create $PATH_NCFS-$REGION-$REVISION --repo $ICAP_REPO --path $PATH_NCFS --dest-server https://$CLUSTER_FQDN:443 --dest-namespace $NS_NCFS --revision $REVISION --parameter $PARAM_REMOVE_SECRETS --sync-policy automated --auto-prune
+argocd app create $PATH_NCFS-$SUFFIX-$REGION-$REVISION  --repo $ICAP_REPO --path $PATH_NCFS --dest-server https://$CLUSTER_FQDN:443 --dest-namespace $NS_NCFS --revision $REVISION --parameter $PARAM_REMOVE_SECRETS --sync-policy automated --auto-prune
 
-argocd app create $CERT_MANAGER-$REGION-$REVISION --repo $ICAP_REPO --path $PATH_CERT --dest-server https://$CLUSTER_FQDN:443 --dest-namespace $NS_CERT_MANAGER --revision $REVISION --sync-policy automated --auto-prune
+argocd app create $CERT_MANAGER-$SUFFIX-$REGION-$REVISION  --repo $ICAP_REPO --path $PATH_CERT --dest-server https://$CLUSTER_FQDN:443 --dest-namespace $NS_CERT_MANAGER --revision $REVISION --sync-policy automated --auto-prune
 
-argocd app create $PROMETHEUS-$REGION-develop --repo $ICAP_REPO --path $PATH_PROMETHEUS --dest-server https://$CLUSTER_FQDN:443 --dest-namespace $NS_MONITORING --revision develop --sync-policy automated --auto-prune
+argocd app create $PROMETHEUS-$SUFFIX-$REGION-develop --repo $ICAP_REPO --path $PATH_PROMETHEUS --dest-server https://$CLUSTER_FQDN:443 --dest-namespace $NS_MONITORING --revision develop --sync-policy automated --auto-prune
 
-argocd app create $GRAFANA-$REGION-develop --repo $ICAP_REPO --path $PATH_GRAFANA --dest-server https://$CLUSTER_FQDN:443 --dest-namespace $NS_MONITORING --revision develop --sync-policy automated --auto-prune
+argocd app create $GRAFANA-$SUFFIX-$REGION-develop --repo $ICAP_REPO --path $PATH_GRAFANA --dest-server https://$CLUSTER_FQDN:443 --dest-namespace $NS_MONITORING --revision develop --sync-policy automated --auto-prune

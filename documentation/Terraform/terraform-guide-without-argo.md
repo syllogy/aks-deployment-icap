@@ -7,103 +7,113 @@
   - [1. Pre-requisites](#1-pre-requisites)
     - [1.1 Azure Subscription Pre Requisite](#11-azure-subscription-pre-requisite)
   - [2. Usage](#2-usage)
-    - [2.1 Clone Repo.](#21-clone-repo)
-    - [2.2 Firstly make sure you are logged in and using the correct subscription.](#22-firstly-make-sure-you-are-logged-in-and-using-the-correct-subscription)
-    - [2.3 Add Terraform Backend Key to Environment](#23-add-terraform-backend-key-to-environment)
-    - [2.4 File Modifications](#24-file-modifications)
+    - [Clone the repo](#clone-the-repo)
+    - [2.1 Build and Start Docker Container](#21-build-and-start-docker-container)
+    - [2.2 Log in to Azure CLI](#22-log-in-to-azure-cli)
+    - [2.3 File Modifications](#23-file-modifications)
   - [4. Pre deployment](#4-pre-deployment)
     - [4.1 ICAP Port customization](#41-icap-port-customization)
   - [5. Deployment](#5-deployment)
     - [5.1 Setup and Initialise Terraform](#51-setup-and-initialise-terraform)
+    - [Accessing Endpoints](#accessing-endpoints)
     - [Destruction](#destruction)
 
 ## 1. Pre-requisites
 
-- Terraform
-- Kubectl
-- Helm
-- Openssl
-- Azure CLI 
-- Bash terminal or terminal able to execute bash scripts
-- JSON processor (jq)
-- Git
+- Docker
 - Microsoft account
 - Azure Subscription
-  - Owner or Azure account administrator role on the Azure subscription
-- Dockerhub account 
-- Tarball containing all images for ICAP service
+- Owner or Azure account administrator role on the Azure subscription
+- Dockerhub account
 
 | Name | Version |
 |------|---------|
-| terraform | >= 0.14 |
-| kubectl | ~> 1.19 |
-| helm | ~> 3.4 |
-| az cli | ~> 2.17 |
-| jq | ~> 1.6 |
-| Openssl | ~> 1.1 |
-| git | ~> 2.27.0 |
+| docker | >= 20.10.2 |
+
+***Please note this version was on MacOS and could differ to the latest version on Windows and Linux. Just mke sure you're running the latest version.***
 
 ### 1.1 Azure Subscription Pre Requisite
 
 - There should be atleast one subscription associated to azure account
 - The subscription should have **Contributor** role which allows user to create and manage virtual machines
 - A service principle with Contributer rights within the subscription of choice
-  - You will need the ```ClientID``` and ```ClientSecret```
 - This documentation will provision a managed Azure Kubernetes (AKS) cluster on which to deploy the application. 
 - This cluster has configured to auto scaling and  runs on a minimum of 4 nodes and maximum of 100 nodes.
-- The specification of the nodes is defined in the `modules/aks01` configuration of this deployment
+- The specification of the nodes is defined in the `modules` within each deployment
 - The default configuration is to run 4 nodes of which will consume one virtual CPU’s (vCPU) of  type **Standard_DS4_v2** type anf **100 gb** on disk size  -
 - The total amount of vCPU available in an Azure region is determined by the subscription itself.
 - When deploying, it is essential to ensure that there is enough vCPU available within your subscription to provision the node type and count specified.
 
 ## 2. Usage
 
-### 2.1 Clone Repo.
+### Clone the repo
 
-```
-git clone https://github.com/k8-proxy/icap-aks-delivery.git
-cd icap-aks-delivery
-git submodule init
-git submodule update
-```
-   
-### 2.2 Firstly make sure you are logged in and using the correct subscription.
+For now this step is here so you can access the Dockerfile. Once the container is in our Dockerhub account it will be removed.
 
 ```bash
+git clone https://github.com/filetrust/aks-deployment-icap.git
+```
 
+### 2.1 Build and Start Docker Container
+
+To start the docker container use the following:
+
+```bash
+cd ./docker-image
+
+docker build -t aks-deployment .
+```
+
+Once build has finished, you can use the below command to gain CLI access:
+
+```bash
+docker run -it aks-deployment:latest /bin/bash
+```
+
+Once inside the working directory is:
+
+```bash
+cd ~/deployment/aks-deployment-icap
+```
+
+***Next step is optional - the default branch is main***
+
+This step you can also change the branch of the the Icap-Infrastructure submodule as well. This can enable you to use either the Develop or Main branch or a branch that you've created to do testing.
+
+```bash
+cd charts/icap-infrastructure
+
+git checkout <name of branch>
+```
+
+Now when you run the deployment it will use the charts from this branch.
+   
+### 2.2 Log in to Azure CLI
+
+```bash
 az login
-az account list --output table
-az account set -s <subscription ID>
 
-# Confirm you are on correct subscription
-az account show
-
+az account set --subscription b8177f86-515f-4bff-bd08-1b9535dbc31b
 ```
 
-### 2.3 Add Terraform Backend Key to Environment
-
-- Check if you have access to key vault using below command:
-```
-az keyvault secret show --name terraform-backend-key --vault-name gw-tfstate-Vault --query value -o tsv
-```
-- Export the environment variable "ARM_ACCESS_KEY" to be able to initialise terraform
+### 2.3 File Modifications
 
 ```
-export ARM_ACCESS_KEY=$(az keyvault secret show --name terraform-backend-key --vault-name gw-tfstate-Vault --query value -o tsv)
+cd ./deployments/04-template
 ```
- 
-- Check if you can access ARM_ACCESS_KEY as variable
-```
-echo $ARM_ACCESS_KEY
-```
-
-### 2.4 File Modifications
 
 - backend.tfvars - this will be used as azure backend to store deployment state.
+The only part of the ```backend.tfvars``` you will need to change is the first part of the key. See example below:
+
+```bash
+key                  = "<must be unique>.terraform.tfstate"
+```
 
 - terraform.tfvars
 
-```
+***Please note that ```enable_argocd_pipeline``` must be set to ```false``` - you will also need to make sure ```enable_helm_deployment``` is set to ```true```
+
+```bash
 vim terraform.tfvars
 
 # give a valid region name
@@ -135,37 +145,35 @@ revision               = "main"
 ## 4. Pre deployment
 
 ### 4.1 ICAP Port customization
+
+***This step can be ignored if you do not plan changing the ICAP Ports***
+
 - By default icap-server will run on port 1344 for SSL and 1345 for TLS
 - If you want to customize the above port, please follow below procedure
-```
+```bash
 vim terraform.tfvars
 ```
 - Edit variables `icap_port` and `icap_tlsport` according to requirement and Save it.
 
-Note : Please avoide port 80, 443 since this will be used for file-drop UI.
+Note : Please avoid port 80, 443 since this will be used for file-drop UI.
 
 ## 5. Deployment
 ### 5.1 Setup and Initialise Terraform
 
 - Run following:
-```
-terraform init -backend-config="backend.tfvars" 
-
+```bash
+terraform init -backend-config="backend.tfvars"
 ```
 - Run terraform validate/refresh to check for changes within the state, and also to make sure there aren't any issues.
-```
+
+```bash
 terraform validate
 
-#Output should be: Success! The configuration is valid.
-```
-
-- Run
-```
-terraform plan -var-file=terraform.tfvars
+# Output should be: Success! The configuration is valid.
 ```
 
 - Now you're ready to run apply
-``` 
+```bash
 terraform apply -var-file=terraform.tfvars
 
 # You will get below output. Make sure to enter YES when prompt
@@ -176,11 +184,29 @@ Enter a value:
 Enter "yes"
 ```
 
+### Accessing Endpoints
+
+The endpoints for all the deployments follow the below format
+
+```bash
+icap-$SUFFIX.$REGION.$DOMAIN
+
+management-ui-$SUFFIX.$REGION.$DOMAIN
+
+file-drop-$SUFFIX.$REGION.$DOMAIN
+```
+
+so you can access them by checking ```terrraform.tfvars``` and checking what the above variables were set to.
+
+You should also have the kube contexts within the docker container to check the clusters directly. 
+
+If you want to access them outside of the docker container, then you will need to get the credentials for the cluster from the Azure Portal.
+
 ### Destruction
 
 In order to destroy the terraform deployment, all you need to do is the following:
 
-```
+```bash
 terraform destroy -var-file=terraform.tfvars
 ```
 
