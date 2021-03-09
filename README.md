@@ -15,13 +15,14 @@ This Terraform deployment will deploy the following resources:
   - [Prerequisites](#prerequisites)
   - [1. Quickstart guide](#1-quickstart-guide)
     - [Clone the repo](#clone-the-repo)
-    - [1.2 Start Docker Container](#12-start-docker-container)
-    - [1.2 Change Icap-infrastructure branch](#12-change-icap-infrastructure-branch)
-    - [1.2 Log in to Azure CLI](#12-log-in-to-azure-cli)
-    - [1.3 Edit terraform.tfvars](#13-edit-terraformtfvars)
-    - [1.4 Change key in backend.tfvars](#14-change-key-in-backendtfvars)
-    - [1.5 Init and Apply](#15-init-and-apply)
-    - [1.6 Destroying the deployment](#16-destroying-the-deployment)
+    - [1.1 Start Docker Container](#11-start-docker-container)
+    - [1.2 Initialise git submodule](#12-initialise-git-submodule)
+    - [1.3 Change Icap-infrastructure branch](#13-change-icap-infrastructure-branch)
+    - [1.4 Log in to Azure CLI](#14-log-in-to-azure-cli)
+    - [1.5 Edit terraform.tfvars](#15-edit-terraformtfvars)
+    - [1.6 Change key in backend.tfvars](#16-change-key-in-backendtfvars)
+    - [1.7 Init and Apply](#17-init-and-apply)
+    - [1.8 Destroying the deployment](#18-destroying-the-deployment)
   - [2. Deployment and Code documentation](#2-deployment-and-code-documentation)
   - [2.1 Deployment Guide](#21-deployment-guide)
   - [2.2 Code Breakdown](#22-code-breakdown)
@@ -48,7 +49,7 @@ For now this step is here so you can access the Dockerfile. Once the container i
 git clone https://github.com/filetrust/aks-deployment-icap.git
 ```
 
-### 1.2 Start Docker Container
+### 1.1 Start Docker Container
 
 To start the docker container use the following:
 
@@ -69,7 +70,17 @@ Once inside the working directory is:
 ```bash
 cd ~/deployment/aks-deployment-icap
 ```
-### 1.2 Change Icap-infrastructure branch
+### 1.2 Initialise git submodule
+
+```bash
+cd ~/deployment/aks-deployment-icap
+
+git submodule init
+
+git submodule update
+```
+
+### 1.3 Change Icap-infrastructure branch
 
 This step is optional but you can change the branch you wish to deploy with. This can be useful for deploying a branch you've created, that is isolated from Dev and Main.
 
@@ -81,7 +92,7 @@ git checkout <name of branch>
 
 Now when you run the deployment it will use the charts from this branch.
 
-### 1.2 Log in to Azure CLI
+### 1.4 Log in to Azure CLI
 
 ```bash
 az login
@@ -89,7 +100,7 @@ az login
 az account set --subscription b8177f86-515f-4bff-bd08-1b9535dbc31b
 ```
 
-### 1.3 Edit terraform.tfvars 
+### 1.5 Edit terraform.tfvars 
 
 Working Dir is below:
 
@@ -116,7 +127,7 @@ enable_helm_deployment = true
 revision               = "main"
 ```
 
-### 1.4 Change key in backend.tfvars
+### 1.6 Change key in backend.tfvars
 
 You will also need to change to the key within the ```backend.tfvars``` as this will store you deployments state. The only part that needs to be unique is everything before ```.terraform.tfstate```
 
@@ -127,7 +138,7 @@ container_name       = "gw-icap-tfstate"
 key                  = "03qauks.terraform.tfstate"
 ```
 
-### 1.5 Init and Apply
+### 1.7 Init and Apply
 
 Now you're ready to init and apply 
 
@@ -149,7 +160,7 @@ management-ui-$SUFFIX.$REGION.cloudapp.azure.com
 file-drop-$SUFFIX.$REGION.cloudapp.azure.com
 ```
 
-### 1.6 Destroying the deployment
+### 1.8 Destroying the deployment
 
 In order to destroy the terraform deployment, all you need to do is the following:
 
