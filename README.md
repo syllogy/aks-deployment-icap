@@ -134,7 +134,9 @@ revision               = "main"
 
 ### 1.6 Change key in backend.tfvars
 
-You will also need to change to the key within the ```backend.tfvars``` as this will store you deployments state. The only part that needs to be unique is everything before ```.terraform.tfstate```
+You will also need to change to the key within the ```backend.tfvars``` as this will store you deployments state. The only part that needs to be unique is everything before ```.terraform.tfstate```.
+
+***Try to refrain from using any special characters, keep format to A-Z / 1-9***
 
 ```bash
 resource_group_name  = "gw-icap-tfstate"
