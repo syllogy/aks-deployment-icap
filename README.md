@@ -14,6 +14,7 @@ This Terraform deployment will deploy the following resources:
   - [Table of contents](#table-of-contents)
   - [Prerequisites](#prerequisites)
   - [1. Quickstart guide](#1-quickstart-guide)
+    - [Pre-Reqs for Quickstart](#pre-reqs-for-quickstart)
     - [Clone the repo](#clone-the-repo)
     - [1.1 Start Docker Container](#11-start-docker-container)
     - [1.2 Initialise git submodule](#12-initialise-git-submodule)
@@ -40,6 +41,10 @@ For all pre-reqs please see full guide below:
 ## 1. Quickstart guide
 
 Below is a quick start guide so you can deploy a cluster to test with fairly quickly, without a ArgoCD pipeline. When you clone the repo down, you can use 01 - 04 deployments to stand up a cluster. 04 is for ArgoCD and should be left where it is.
+
+### Pre-Reqs for Quickstart
+
+- Docker
 
 ### Clone the repo
 
@@ -68,12 +73,12 @@ docker run -it aks-deployment:latest /bin/bash
 Once inside the working directory is:
 
 ```bash
-cd ~/deployment/aks-deployment-icap
+cd ~/deployment/aks-deployment-icap/deployments/04-template
 ```
 ### 1.2 Initialise git submodule
 
 ```bash
-cd ~/deployment/aks-deployment-icap
+cd ~/deployment/aks-deployment-icap/
 
 git submodule init
 
@@ -85,7 +90,7 @@ git submodule update
 This step is optional but you can change the branch you wish to deploy with. This can be useful for deploying a branch you've created, that is isolated from Dev and Main.
 
 ```bash
-cd charts/icap-infrastructure
+cd ~/deployment/aks-deployment-icap/charts/icap-infrastructure
 
 git checkout <name of branch>
 ```
@@ -100,12 +105,12 @@ az login
 az account set --subscription b8177f86-515f-4bff-bd08-1b9535dbc31b
 ```
 
-### 1.5 Edit terraform.tfvars 
+### 1.5 Edit terraform.tfvars
 
 Working Dir is below:
 
 ```bash
-cd ~/deployment/aks-deployment-icap/04-template
+cd ~/deployment/aks-deployment-icap/deployments/04-template
 ```
 
 Open ```terraform.tfvars``` and change the suffix to something unique (not exceeding more than 5 chars) and make sure ```enable_argocd_pipeline``` is set to false and ```enable_helm_deployment``` is set to true.
