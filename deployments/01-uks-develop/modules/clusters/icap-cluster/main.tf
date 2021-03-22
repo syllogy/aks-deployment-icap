@@ -228,6 +228,9 @@ resource "helm_release" "ekl-stack" {
 
   # Deploy Grafana helm chart
   resource "helm_release" "grafana" {
+
+    count = var.enable_helm_deployment ? 1 : 0
+
     name             = var.release_name08
     namespace        = var.namespace08
     create_namespace = true
@@ -242,10 +245,35 @@ resource "helm_release" "ekl-stack" {
 
   # Deploy Prometheus helm chart
   resource "helm_release" "prometheus" {
+
+    count = var.enable_helm_deployment ? 1 : 0
+
     name             = var.release_name09
     namespace        = var.namespace09
     create_namespace = true
     chart            = var.chart_path09
+    wait             = true
+    cleanup_on_fail  = true
+
+    set {
+        name  = "server.service.loadBalancerSourceRanges"
+        value = var.ip_ranges_01
+    }
+
+    depends_on = [ 
+      azurerm_kubernetes_cluster.icap-deploy,
+    ]
+  }
+
+  # Deploy Cadvisor helm chart
+  resource "helm_release" "cadvisor" {
+
+    count = var.enable_helm_deployment ? 1 : 0
+
+    name             = var.release_name10
+    namespace        = var.namespace10
+    create_namespace = true
+    chart            = var.chart_path10
     wait             = true
     cleanup_on_fail  = true
 

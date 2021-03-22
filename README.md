@@ -70,10 +70,15 @@ Once build has finished, you can use the below command to gain CLI access:
 docker run -it aks-deployment:latest /bin/bash
 ```
 
-Once inside the working directory is:
+Once inside you can choose between two templates
+
+- Single node deployment, no autoscaling (good for testing small changes)
+- Multi-node deployment, with autoscaling (goof for performance testing changes) 
+
+Both of the templates can be found in deployments within:
 
 ```bash
-cd ~/deployment/aks-deployment-icap/deployments/04-template
+cd ~/deployment/aks-deployment-icap/deployments/
 ```
 ### 1.2 Initialise git submodule
 
@@ -107,10 +112,10 @@ az account set --subscription b8177f86-515f-4bff-bd08-1b9535dbc31b
 
 ### 1.5 Edit terraform.tfvars
 
-Working Dir is below:
+CD into your Working Dir (see step 1.1 if not sure):
 
 ```bash
-cd ~/deployment/aks-deployment-icap/deployments/04-template
+cd ~/deployment/aks-deployment-icap/deployments/<template name here>
 ```
 
 Open ```terraform.tfvars``` and change the suffix to something unique (not exceeding more than 5 chars) and make sure ```enable_argocd_pipeline``` is set to false and ```enable_helm_deployment``` is set to true.
