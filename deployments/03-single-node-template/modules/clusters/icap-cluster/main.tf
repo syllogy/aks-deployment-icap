@@ -28,13 +28,9 @@ resource "azurerm_kubernetes_cluster" "icap-deploy" {
 
   default_node_pool {
     name            = var.node_name
-    node_count      = 4
+    node_count      = 1
     vm_size         = "Standard_DS4_v2"
     os_disk_size_gb = 100
-
-    enable_auto_scaling = true
-    min_count           = var.min_count
-    max_count           = var.max_count
   }
 
   identity {
@@ -228,6 +224,9 @@ resource "helm_release" "ekl-stack" {
 
   # Deploy Grafana helm chart
   resource "helm_release" "grafana" {
+
+    count = var.enable_helm_deployment ? 1 : 0
+
     name             = var.release_name08
     namespace        = var.namespace08
     create_namespace = true
@@ -242,10 +241,35 @@ resource "helm_release" "ekl-stack" {
 
   # Deploy Prometheus helm chart
   resource "helm_release" "prometheus" {
+
+    count = var.enable_helm_deployment ? 1 : 0
+
     name             = var.release_name09
     namespace        = var.namespace09
     create_namespace = true
     chart            = var.chart_path09
+    wait             = true
+    cleanup_on_fail  = true
+
+    set {
+        name  = "server.service.loadBalancerSourceRanges"
+        value = var.ip_ranges_01
+    }
+
+    depends_on = [ 
+      azurerm_kubernetes_cluster.icap-deploy,
+    ]
+  }
+
+  # Deploy Cadvisor helm chart
+  resource "helm_release" "cadvisor" {
+
+    count = var.enable_helm_deployment ? 1 : 0
+
+    name             = var.release_name10
+    namespace        = var.namespace10
+    create_namespace = true
+    chart            = var.chart_path10
     wait             = true
     cleanup_on_fail  = true
 

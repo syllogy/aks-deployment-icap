@@ -12,23 +12,22 @@ module "create_aks_cluster" {
 	resource_group            =   "icap-aks-rg-${var.suffix}"
 	region                    =   var.azure_region
 	cluster_name              =   "icap-aks-clu-${var.suffix}-${var.azure_region}"
-	min_count				  =   "4"
-	max_count				  =   "100"
 
 	icap_port                 =   var.icap_port
 	icap_tlsport              =   var.icap_tlsport
 	dns_name_01               =   "icap-${var.suffix}"
 	dns_name_04               =   "management-ui-${var.suffix}.${var.azure_region}.${var.domain}"
 	a_record_01				  =   "management-ui-${var.suffix}"
+	ip_ranges_01			  =   var.ip_ranges_01
 
-	kv_vault_name             =    "icap-aks-kv-${var.suffix}"
-	storage_resource          =    "icap-aks-storage-${var.suffix}"
+	kv_vault_name             =   "icap-aks-kv-${var.suffix}"
+	storage_resource          =   "icap-aks-storage-${var.suffix}"
 
-	argocd_cluster_context	  =	   var.argocd_cluster_context
-	enable_argocd_pipeline 	  =	   var.enable_argocd_pipeline
-	enable_helm_deployment    =    var.enable_helm_deployment
-	revision 				  =	   var.revision
-	suffix					  =    var.suffix
+	argocd_cluster_context	  =	  var.argocd_cluster_context
+	enable_argocd_pipeline 	  =	  var.enable_argocd_pipeline
+	enable_helm_deployment    =   var.enable_helm_deployment
+	revision 				  =	  var.revision
+	suffix					  =   var.suffix
 
 }
 
@@ -41,11 +40,11 @@ module "create_aks_cluster_file_drop" {
 	file_drop_dns_name_01     =   "file-drop-${var.suffix}.${var.azure_region}.${var.domain}"
 	a_record_02				  =   "file-drop-${var.suffix}"
 
-	argocd_cluster_context	  =	   var.argocd_cluster_context
-	enable_argocd_pipeline 	  =	   var.enable_argocd_pipeline
-	enable_helm_deployment    =    var.enable_helm_deployment
-	revision 				  =	   var.revision
-	suffix					  =    var.suffix
+	argocd_cluster_context	  =	  var.argocd_cluster_context
+	enable_argocd_pipeline 	  =	  var.enable_argocd_pipeline
+	enable_helm_deployment    =   var.enable_helm_deployment
+	revision 				  =	  var.revision
+	suffix					  =   var.suffix
 
 }
 

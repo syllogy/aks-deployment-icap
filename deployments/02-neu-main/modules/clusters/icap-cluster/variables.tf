@@ -277,3 +277,28 @@ variable "chart_path09" {
   type        = string
   default 	  = "../../charts/icap-infrastructure/helm-charts/prometheus"
 }
+
+## Prometheus Chart
+variable "release_name10" {
+  description = "This is the name of the release"
+  type        = string
+  default 	  = "icap-cadvisor"
+}
+
+variable "namespace10" {
+  description = "This is the name of the namespace"
+  type        = string
+  default 	  = "icap-central-monitoring"
+}
+
+variable "chart_path10" {
+  description = "This is the path to the chart"
+  type        = string
+  default 	  = "../../charts/icap-infrastructure/helm-charts/cadvisor"
+}
+
+variable "ip_ranges_01" {
+  description = "Whitelisted IP Ranges"
+  type        = string
+  default     = ""
+}

@@ -44,3 +44,9 @@ variable "enable_helm_deployment" {
   type        = bool
   default     = true
 }
+
+variable "ip_ranges_01" {
+  description = "Whitelisted IP Ranges"
+  type        = string
+  default     = ""
+}
