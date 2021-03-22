@@ -92,7 +92,7 @@ git submodule update
 
 ### 1.3 Change Icap-infrastructure branch
 
-This step is optional but you can change the branch you wish to deploy with. This can be useful for deploying a branch you've created, that is isolated from Dev and Main.
+You need to be using Main or Develop branch or a branch you have created from either of those.
 
 ```bash
 cd ~/deployment/aks-deployment-icap/charts/icap-infrastructure
