@@ -6,10 +6,10 @@ You can pull the image from our private Dockerhub or build the image with the Do
 
 ## Building and using the image
 
-To build the image run the command below:+
+To build the image run the command below:
 
 ```bash
-docker run -it aks-deployment:latest /bin/bash
+docker build -t aks-deployment .
 ```
 
 After it has finished building, you can then use the below command to get exec access and then start using the container:

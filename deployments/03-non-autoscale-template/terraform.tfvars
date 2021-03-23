@@ -1,5 +1,5 @@
 azure_region           = "uksouth"
-suffix                 = "mptest"
+suffix                 = "mptest2"
 
 domain                 = "cloudapp.azure.com"
 

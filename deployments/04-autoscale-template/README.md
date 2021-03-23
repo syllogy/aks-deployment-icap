@@ -1,3 +1,12 @@
+# Auto-scale Template
+
+This template deploys a four node cluster, with autoscaling set to the following:
+
+- Minimum - 4 nodes
+- Maximum - 100 nodes
+
+This is to be used for load testing and performance testing. Please do not use this deployment for small code change testing.
+
 ## Requirements
 
 | Name | Version |
@@ -29,8 +38,10 @@ No resources.
 | azure\_region | The Azure Region | `string` | n/a | yes |
 | domain | This is a domain of organization | `string` | n/a | yes |
 | enable\_argocd\_pipeline | The bool to enable the Argocd pipeline | `bool` | `true` | no |
+| enable\_helm\_deployment | The bool to enable the helm deployment | `bool` | `true` | no |
 | icap\_port | The Azure backend vault name | `string` | n/a | yes |
 | icap\_tlsport | The Azure backend storage account | `string` | n/a | yes |
+| ip\_ranges\_01 | Whitelisted IP Ranges | `string` | `""` | no |
 | revision | The revision/branch used for ArgoCD | `string` | n/a | yes |
 | suffix | This is a consolidated name based on org, environment, region | `string` | n/a | yes |
 
