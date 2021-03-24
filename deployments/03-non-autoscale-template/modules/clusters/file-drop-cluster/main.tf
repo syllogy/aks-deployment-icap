@@ -14,9 +14,9 @@ resource "azurerm_resource_group" "file_drop_rg" {
   location = var.region
 
   tags = {
-    created_by         = "Glasswall Solutions"
-    deployment_version = "1.0.0"
-    environment        = "Development"
+    created_by         = var.created_by
+    deployment_version = "1.3.0"
+    environment        = var.environment
   }
 }
 
@@ -42,9 +42,10 @@ resource "azurerm_kubernetes_cluster" "file-drop" {
   }
 
   tags = {
-    created_by         = "Glasswall Solutions"
-    deployment_version = "1.0.0"
-    environment        = "Development"
+    created_by         = var.created_by
+    deployment_version = "1.3.0"
+    environment        = var.environment
+    azure_function     = "cluster"
   }
 }
 

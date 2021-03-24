@@ -45,3 +45,15 @@ variable "access_tier" {
   type        = string
   default     = "Hot"
 }
+
+variable "created_by" {
+  description = "The tags for the infrastructure"
+  type        = string
+  default     = ""
+}
+
+variable "environment" {
+  description = "The tags for the infrastructure"
+  type        = string
+  default     = ""
+}

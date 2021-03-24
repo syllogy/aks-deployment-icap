@@ -7,8 +7,9 @@ resource "azurerm_resource_group" "keyvault" {
   location = var.region
   
   tags = {
-    created_by         = "Glasswall Solutions"
-    deployment_version = "1.0.0"
+    created_by         = var.created_by
+    deployment_version = "1.3.0"
+    environment        = var.environment
   }
 }
 

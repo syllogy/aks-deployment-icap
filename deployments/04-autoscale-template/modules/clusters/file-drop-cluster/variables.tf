@@ -53,6 +53,18 @@ variable "enable_helm_deployment" {
   default     = true
 }
 
+variable "created_by" {
+  description = "The tags for the infrastructure"
+  type        = string
+  default     = ""
+}
+
+variable "environment" {
+  description = "The tags for the infrastructure"
+  type        = string
+  default     = ""
+}
+
 # Chart Variables
 ## FIle-Drop Chart
 variable "release_name01" {

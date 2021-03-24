@@ -9,6 +9,12 @@ resource "random_string" "name" {
 resource "azurerm_resource_group" "rg" {
   name     = var.resource_group
   location = var.region
+
+  tags = {
+    created_by         = var.created_by
+    deployment_version = "1.3.0"
+    environment        = var.environment
+  }
 }
 
 # Create Storage Account
@@ -22,8 +28,9 @@ resource "azurerm_storage_account" "storage" {
   account_replication_type = var.application_replication_type
   
   tags = {
-    environment = "test"
-    created_by  = "Mattp"
+    created_by         = var.created_by
+    deployment_version = "1.3.0"
+    environment        = var.environment
   }
 }
 

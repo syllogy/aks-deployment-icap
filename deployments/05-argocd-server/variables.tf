@@ -8,17 +8,14 @@ variable "suffix" {
   type        = string
 }
 
-# variable "domain" {
-#   description = "This is a domain of organization"
-#   type        = string
-# }
+variable "created_by" {
+  description = "The tags for the infrastructure"
+  type        = string
+  default     = ""
+}
 
-# variable "icap_port" {
-#     description = "The Azure backend vault name"
-#     type = string
-# }
-
-# variable "icap_tlsport" {
-#     description = "The Azure backend storage account"
-#     type = string
-# }
+variable "environment" {
+  description = "The tags for the infrastructure"
+  type        = string
+  default     = ""
+}

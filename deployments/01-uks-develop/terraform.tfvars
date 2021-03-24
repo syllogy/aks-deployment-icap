@@ -11,3 +11,6 @@ argocd_cluster_context = "argocd-aks-deploy"
 enable_argocd_pipeline = false
 enable_helm_deployment = true
 revision               = "develop"
+
+created_by             = "Matthew Pigram"
+environment            = "Development"
