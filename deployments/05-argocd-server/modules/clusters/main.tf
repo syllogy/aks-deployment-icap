@@ -46,7 +46,7 @@ resource "azurerm_kubernetes_cluster" "argo-deploy" {
     created_by         = var.created_by
     deployment_version = "1.3.0"
     environment        = var.environment
-    azure_function     = "cluster"
+    shutdown_function  = "cluster"
   }
 }
 
