@@ -46,6 +46,18 @@ variable "kv_vault_name" {
  default      = ""
 }
 
+variable "created_by" {
+  description = "The tags for the infrastructure"
+  type        = string
+  default     = ""
+}
+
+variable "environment" {
+  description = "The tags for the infrastructure"
+  type        = string
+  default     = ""
+}
+
 # Chart Variables
 ## Argocd Chart
 variable "release_name01" {

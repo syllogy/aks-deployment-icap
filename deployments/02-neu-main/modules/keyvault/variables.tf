@@ -33,3 +33,15 @@ variable "file_drop_dns" {
   type        = string
   default     = ""
 }
+
+variable "created_by" {
+  description = "The tags for the infrastructure"
+  type        = string
+  default     = ""
+}
+
+variable "environment" {
+  description = "The tags for the infrastructure"
+  type        = string
+  default     = ""
+}
