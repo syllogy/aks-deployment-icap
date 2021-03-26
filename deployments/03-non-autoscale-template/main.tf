@@ -28,6 +28,9 @@ module "create_aks_cluster" {
 	enable_helm_deployment    =   var.enable_helm_deployment
 	revision 				  =	  var.revision
 	suffix					  =   var.suffix
+	
+	created_by             	  =   var.created_by
+	environment            	  =   var.environment
 
 }
 
@@ -45,6 +48,9 @@ module "create_aks_cluster_file_drop" {
 	enable_helm_deployment    =   var.enable_helm_deployment
 	revision 				  =	  var.revision
 	suffix					  =   var.suffix
+	
+	created_by             	  =   var.created_by
+	environment            	  =   var.environment
 
 }
 
@@ -54,6 +60,9 @@ module "create_storage_account" {
 	
 	resource_group		      =   "icap-aks-storage-${var.suffix}"
 	region                    =   var.azure_region
+	
+	created_by             	  =   var.created_by
+	environment            	  =   var.environment
 
 }
 
@@ -67,5 +76,8 @@ module "create_key_vault" {
 	icap_dns                  =   "icap-${var.suffix}.${var.azure_region}.${var.domain}"
 	mgmt_dns                  =   "management-ui-${var.suffix}.${var.azure_region}.${var.domain}"
 	file_drop_dns             =   "file-drop-${var.suffix}.${var.azure_region}.${var.domain}"
+
+	created_by             	  =   var.created_by
+	environment            	  =   var.environment
 
 }
