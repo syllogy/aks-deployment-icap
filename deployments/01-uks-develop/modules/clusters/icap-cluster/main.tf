@@ -314,7 +314,7 @@ resource "null_resource" "add_apps_argo" {
 
  provisioner "local-exec" {
 
-    command = "/bin/bash ../../scripts/argocd_scripts/argocd-app-deploy.sh ${var.resource_group} ${var.cluster_name} ${var.region} ${var.suffix} ${var.revision} ${var.argocd_cluster_context}"
+    command = "/bin/bash ../../scripts/argocd_scripts/argocd-app-deploy.sh ${var.resource_group} ${var.cluster_name} ${var.region} ${var.suffix} ${var.revision} ${var.argocd_cluster_context} ${var.argo_ip} ${var.argo_password}"
   }
 
   depends_on = [

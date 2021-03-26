@@ -65,6 +65,18 @@ variable "environment" {
   default     = ""
 }
 
+variable "argo_ip" {
+  description = "The IP for the ArgoCD server"
+  type        = string
+  default     = ""
+}
+
+variable "argo_password" {
+  description = "The password for the ArgoCD server"
+  type        = string
+  default     = ""
+}
+
 # Chart Variables
 ## FIle-Drop Chart
 variable "release_name01" {
@@ -96,7 +108,6 @@ variable "a_record_02" {
   type = string
   default = ""
 }
-
 
 ## Cert-Manager Chart
 variable "release_name02" {

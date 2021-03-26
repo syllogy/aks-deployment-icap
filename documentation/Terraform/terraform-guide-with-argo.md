@@ -108,11 +108,11 @@ az aks get-credentials --resource-group icap-aks-rg-argo --name icap-aks-clu-arg
 Next you'll need to add the Argo password and IP to env variables
 
 ```bash
-ARGOPASS=$(kubectl get pods -n argocd -l app.kubernetes.io/name=argocd-server -o name | cut -d'/' -f 2)
+ARGOPASS=$(kubectl get pods -n argocd -l app.kubernetes.io/name=argocd-server -o name -n argocd | cut -d'/' -f 2)
 ```
 
 ```bash
-ARGOIP=$(kubectl get svc -n argocd argocd-server -o jsonpath="{.status.loadBalancer.ingress[*].ip}")
+ARGOIP=$(kubectl get svc -n argocd argocd-server -n argocd -o jsonpath="{.status.loadBalancer.ingress[*].ip}")
 ```
 
 Using the username "admin" and the password above, login using the public IP of ArgoCD
