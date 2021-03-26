@@ -8,6 +8,9 @@ icap_tlsport           = 1345
 ip_ranges_01           = "{212.59.65.150/32, 212.59.65.142/32}"
 
 argocd_cluster_context = "argocd-aks-deploy"
+argod_ip               = ""
+argo_password          = ""
+
 enable_argocd_pipeline = true
 enable_helm_deployment = false
 revision               = "develop"

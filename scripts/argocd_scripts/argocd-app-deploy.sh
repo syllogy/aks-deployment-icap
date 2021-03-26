@@ -6,6 +6,8 @@ REGION=$3
 SUFFIX=$4
 REVISION=$5
 ARGO_CONTEXT=$6
+ARGOIP=$7
+ARGOPASS=$8
 DOMAIN="cloudapp.azure.com"
 
 # Cluster FQDN Variables
@@ -29,8 +31,8 @@ PATH_ADMINISTRATION="administration"
 PATH_NCFS="ncfs"
 PATH_CERT="cert-manager-chart"
 PATH_RABBITMQ="rabbitmq-operator"
-PATH_PROMETHEUS="helm-charts/prometheus/"
-PATH_GRAFANA="helm-charts/grafana/"
+PATH_PROMETHEUS="helm-charts/prometheus"
+PATH_GRAFANA="helm-charts/grafana"
 PATH_CADVISOR="helm-charts/cadvisor"
 PATH_FILEDROP="filedrop"
 PATH_ELK_STACK="elk-stack"
@@ -53,10 +55,13 @@ MGMT_DNS_01="controller.service.annotations.service\\.beta\\.kubernetes\\.io/azu
 MGMT_DNS_02="managementui.ingress.host=management-ui-$SUFFIX.$REGION.$DOMAIN"
 IDENTITY_MGMT_DNS_02="identitymanagementservice.configuration.ManagementUIEndpoint=management-ui-$SUFFIX.$REGION.$DOMAIN"
 FILEDROP_DNS="controller.service.annotations.service\\.beta\\.kubernetes\\.io/azure-dns-label-name=file-drop-$SUFFIX.$REGION.$DOMAIN"
-MONITORING_IP_RANGES="server.service.loadBalancerSourceRanges={212.59.65.150/32, 212.59.65.142/32}"
+# MONITORING_IP_RANGES="server.service.loadBalancerSourceRanges={212.59.65.150/32, 212.59.65.142/32}"
 
 # Github repo
 ICAP_REPO="https://github.com/filetrust/icap-infrastructure"
+
+# login to argocd server
+argocd login $ARGOIP --name argocd-delivery-server --username admin --password $ARGOPASS --insecure
 
 # Switch to argo context
 argocd context $ARGO_CONTEXT
@@ -77,7 +82,7 @@ argocd app create $PATH_NCFS-$SUFFIX-$REGION-$REVISION  --repo $ICAP_REPO --path
 
 argocd app create $CERT_MANAGER-$SUFFIX-$REGION-$REVISION  --repo $ICAP_REPO --path $PATH_CERT --dest-server https://$CLUSTER_FQDN:443 --dest-namespace $NS_CERT_MANAGER --revision $REVISION --sync-policy automated --auto-prune
 
-argocd app create $PROMETHEUS-$SUFFIX-$REGION-develop --repo $ICAP_REPO --path $PATH_PROMETHEUS --dest-server https://$CLUSTER_FQDN:443 --dest-namespace $NS_MONITORING --revision develop --parameter $MONITORING_IP_RANGES --sync-policy automated --auto-prune
+argocd app create $PROMETHEUS-$SUFFIX-$REGION-develop --repo $ICAP_REPO --path $PATH_PROMETHEUS --dest-server https://$CLUSTER_FQDN:443 --dest-namespace $NS_MONITORING --revision develop --sync-policy automated --auto-prune
 
 argocd app create $CADVISOR-$SUFFIX-$REGION-develop --repo $ICAP_REPO --path $PATH_CADVISOR --dest-server https://$CLUSTER_FQDN:443 --dest-namespace $NS_MONITORING --revision develop --sync-policy automated --auto-prune
 

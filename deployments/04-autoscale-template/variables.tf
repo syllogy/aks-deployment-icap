@@ -62,3 +62,15 @@ variable "environment" {
   type        = string
   default     = ""
 }
+
+variable "argo_ip" {
+  description = "The IP for the ArgoCD server"
+  type        = string
+  default     = ""
+}
+
+variable "argo_password" {
+  description = "The password for the ArgoCD server"
+  type        = string
+  default     = ""
+}

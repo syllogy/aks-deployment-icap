@@ -28,6 +28,9 @@ module "create_aks_cluster" {
 	argocd_cluster_context	  =	  var.argocd_cluster_context
 	enable_argocd_pipeline 	  =	  var.enable_argocd_pipeline
 	enable_helm_deployment    =   var.enable_helm_deployment
+	argod_ip               	  =   var.argod_ip
+	argo_password          	  =   var.argo_password
+
 	revision 				  =	  var.revision
 	suffix					  =   var.suffix
 
@@ -48,6 +51,9 @@ module "create_aks_cluster_file_drop" {
 	argocd_cluster_context	  =	  var.argocd_cluster_context
 	enable_argocd_pipeline 	  =	  var.enable_argocd_pipeline
 	enable_helm_deployment    =   var.enable_helm_deployment
+	argod_ip               	  =   var.argod_ip
+	argo_password          	  =   var.argo_password
+	
 	revision 				  =	  var.revision
 	suffix					  =   var.suffix
 
