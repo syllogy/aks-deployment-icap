@@ -17,6 +17,7 @@ resource "azurerm_resource_group" "file_drop_rg" {
     created_by         = var.created_by
     deployment_version = "1.3.0"
     environment        = var.environment
+    shutdown_function  = "terraform-cluster-rg"
   }
 }
 
@@ -45,7 +46,7 @@ resource "azurerm_kubernetes_cluster" "file-drop" {
     created_by         = var.created_by
     deployment_version = "1.3.0"
     environment        = var.environment
-    shutdown_function  = "cluster"
+    shutdown_function  = "terraform-cluster"
   }
 }
 
